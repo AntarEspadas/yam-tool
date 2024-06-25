@@ -19,26 +19,43 @@
 
 	$: opacity = editMode ? 1 : 0;
 
+	$: load(id);
+
 	$: svgPoints = getSvgPoints(points, closed, gridX, gridY);
 
 	$: if (!editing) {
 		document.removeEventListener('mousemove', onDrag);
 		dragTarget = undefined;
+		save();
 	} else {
 		document.addEventListener('mousemove', onDrag);
 	}
 
 	onMount(() => {
 		document.addEventListener('mousemove', onDrag);
-		document.addEventListener('click', addPoint);
+		document.addEventListener('mousedown', addPoint);
 		document.addEventListener('mouseup', mouseUp);
 
 		return () => {
 			document.removeEventListener('mousemove', onDrag);
-			document.removeEventListener('click', addPoint);
+			document.removeEventListener('mousedown', addPoint);
 			document.removeEventListener('mouseup', mouseUp);
 		};
 	});
+
+	function save() {
+		const polygons = JSON.parse(localStorage.getItem('polygons')) ?? {};
+		polygons[id] = { points };
+		localStorage.setItem('polygons', JSON.stringify(polygons));
+	}
+
+	function load(id: string) {
+		const polygons = JSON.parse(localStorage.getItem('polygons')) ?? {};
+		points = polygons[id]?.points ?? [];
+		if (points.length !== 0) {
+			closed = true;
+		}
+	}
 
 	function getSvgPoints(points: Point[], closed: boolean, girdX: number, gridY: number) {
 		let pointsStr = 'M' + points.map((p) => p.x * gridX + ' ' + p.y * gridY).join(' L ');
@@ -78,7 +95,6 @@
 	}
 
 	function pointClicked(point: Point) {
-		console.log('editing', editing);
 		if (!editing) return;
 		if (point.dragged) {
 			delete point.dragged;

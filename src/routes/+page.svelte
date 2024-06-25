@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import Polygon from '$lib/components/Polygon.svelte';
 	import ContextMenu from '$lib/components/ContextMenu.svelte';
 
@@ -14,6 +15,14 @@
 	let contextMenuY = 0;
 	let contextMenuTarget: string;
 
+	onMount(() => {
+		const savedPolygons = JSON.parse(localStorage.getItem('polygons')) ?? {};
+		for (const polygon in savedPolygons) {
+			polygons.push(polygon);
+		}
+		polygons = polygons;
+	});
+
 	function addPolygon() {
 		const id = crypto.randomUUID();
 		polygons.push(id);
@@ -24,6 +33,9 @@
 
 	function deleteCurrentPolygon() {
 		polygons = polygons.filter((p) => p !== activePolygon);
+		const savedPolygons = JSON.parse(localStorage.getItem('polygons')) ?? {};
+		delete savedPolygons[activePolygon];
+		localStorage.setItem('polygons', JSON.stringify(savedPolygons));
 		activePolygon = undefined;
 	}
 
@@ -36,7 +48,6 @@
 	}
 
 	function onContextMenu(e: CustomEvent) {
-		console.log('context menu', e);
 		e.detail.originalEvent.preventDefault();
 
 		contextMenuX = e.detail.originalEvent.clientX;
@@ -64,10 +75,8 @@
 		<div class="grid" style="--grid-x:{gridX}px; --grid-y:{gridY}px"></div>
 	{/if}
 	<div class="controls">
-		<button
-			class="add-button"
-			disabled={activePolygon !== undefined}
-			on:click|stopPropagation={addPolygon}>Add</button
+		<button class="add-button" disabled={activePolygon !== undefined} on:click={addPolygon}
+			>Add</button
 		>
 		<label for="grid-x">Grid X</label>
 		<input id="grid-x" type="number" bind:value={gridX} />
@@ -79,7 +88,7 @@
 		{#if activePolygon !== undefined}
 			<div>
 				<button disabled={!polygonClosed} on:click={stopEditingPolygon}>Done</button>
-				<button on:click={deleteCurrentPolygon}>Delete</button>
+				<button on:click={deleteCurrentPolygon} on:mousedown|stopPropagation>Delete</button>
 			</div>
 		{/if}
 	</div>
