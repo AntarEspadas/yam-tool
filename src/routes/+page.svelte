@@ -7,7 +7,6 @@
 	let gridX = 61.5;
 	let gridY = 61.5;
 	let showGrid = false;
-	$: console.log(showGrid);
 
 	function buttonClicked() {
 		if (buttonLabel === 'add') {

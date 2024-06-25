@@ -80,7 +80,7 @@
 		}
 		if (point.first) {
 			closed = true;
-			dispatch('closed');
+			dispatch('closed', {});
 		}
 	}
 
@@ -94,7 +94,7 @@
 		dragTarget = undefined;
 	}
 
-	async function onDrag(e: MouseEvent) {
+	function onDrag(e: MouseEvent) {
 		if (!editing) return;
 		if (dragTarget === undefined) return;
 		const [x, y] = snap(e.clientX, e.clientY, gridX, gridY);
@@ -102,6 +102,25 @@
 		dragTarget.y = y;
 		// We can later use this to skip over 'click' events, as they should not be fired if the element was dragged
 		dragTarget.dragged = true;
+		points = points;
+	}
+
+	function pointKeyDown(e: KeyboardEvent, point: Point) {
+		if (!e.key.startsWith('Arrow')) return;
+		switch (e.key) {
+			case 'ArrowDown':
+				point.y += 1;
+				break;
+			case 'ArrowUp':
+				point.y -= 1;
+				break;
+			case 'ArrowRight':
+				point.x += 1;
+				break;
+			case 'ArrowLeft':
+				point.x -= 1;
+				break;
+		}
 		points = points;
 	}
 
@@ -122,10 +141,11 @@
 	style:fill={closed ? 'rgba(0, 247, 247, 0.25)' : 'none'}
 	style="
 	--opacity:{opacity};
-	--pointer-events:{disabled ? 'none' : 'all'}"
+	--pointer-events:{disabled ? 'none' : 'all'};
+	--cursor:{disabled || editing ? 'default' : 'pointer'};"
 />
 {#if editing}
-	{#each points as point}
+	{#each points as point, i}
 		<circle
 			cx={point.x * gridX}
 			cy={point.y * gridY}
@@ -133,6 +153,9 @@
 			fill="rgb(17, 155, 155)"
 			on:click|stopPropagation={() => pointClicked(point)}
 			on:mousedown|stopPropagation={() => pointMouseDown(point)}
+			on:keydown={(e) => pointKeyDown(e, point)}
+			role="button"
+			tabindex="0"
 		/>
 	{/each}
 {/if}
@@ -143,6 +166,7 @@
 		stroke: rgba(0, 122, 204, 0.5);
 		stroke-width: 3px;
 		pointer-events: var(--pointer-events);
+		cursor: var(--cursor);
 	}
 
 	path:hover {
