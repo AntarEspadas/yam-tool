@@ -1,47 +1,87 @@
 <script lang="ts">
 	import Polygon from '$lib/components/Polygon.svelte';
+	import ContextMenu from '$lib/components/ContextMenu.svelte';
 
 	let polygons: string[] = [];
 	let activePolygon: string | undefined = undefined;
-	let buttonLabel: 'add' | 'cancel' | 'done' = 'add';
+	let polygonClosed = true;
 	let gridX = 61.5;
 	let gridY = 61.5;
 	let showGrid = false;
 
-	function buttonClicked() {
-		if (buttonLabel === 'add') {
-			const id = crypto.randomUUID();
-			polygons.push(id);
-			polygons = polygons;
-			activePolygon = id;
-			buttonLabel = 'cancel';
-		} else if (buttonLabel === 'cancel') {
-			polygons = polygons.filter((p) => p !== activePolygon);
-			activePolygon = undefined;
-			buttonLabel = 'add';
-		} else if (buttonLabel === 'done') {
-			activePolygon = undefined;
-			buttonLabel = 'add';
-		}
+	let showContextMenu = false;
+	let contextMenuX = 0;
+	let contextMenuY = 0;
+	let contextMenuTarget: string;
+
+	function addPolygon() {
+		const id = crypto.randomUUID();
+		polygons.push(id);
+		polygons = polygons;
+		activePolygon = id;
+		polygonClosed = false;
 	}
 
-	function polygonClosed() {
-		buttonLabel = 'done';
+	function deleteCurrentPolygon() {
+		polygons = polygons.filter((p) => p !== activePolygon);
+		activePolygon = undefined;
+	}
+
+	function stopEditingPolygon() {
+		activePolygon = undefined;
+	}
+
+	function markPolygonClosed() {
+		polygonClosed = true;
+	}
+
+	function onContextMenu(e: CustomEvent) {
+		console.log('context menu', e);
+		e.detail.originalEvent.preventDefault();
+
+		contextMenuX = e.detail.originalEvent.clientX;
+		contextMenuY = e.detail.originalEvent.clientY;
+		contextMenuTarget = e.detail.polygonId;
+		showContextMenu = true;
+	}
+
+	function onEdit(e: CustomEvent) {
+		const id = e.detail.polygonId;
+		activePolygon = id;
+		polygonClosed = true;
 	}
 </script>
 
 <div class="map">
+	<ContextMenu
+		bind:open={showContextMenu}
+		x={contextMenuX}
+		y={contextMenuY}
+		polygonId={contextMenuTarget}
+		on:edit={onEdit}
+	/>
 	{#if showGrid}
 		<div class="grid" style="--grid-x:{gridX}px; --grid-y:{gridY}px"></div>
 	{/if}
 	<div class="controls">
-		<button class="add-button" on:click|stopPropagation={buttonClicked}>{buttonLabel}</button>
+		<button
+			class="add-button"
+			disabled={activePolygon !== undefined}
+			on:click|stopPropagation={addPolygon}>Add</button
+		>
 		<label for="grid-x">Grid X</label>
 		<input id="grid-x" type="number" bind:value={gridX} />
 		<label for="grid-y">Grid Y</label>
 		<input id="grid-y" type="number" bind:value={gridY} />
 		<label for="show-grid">Grid Y</label>
 		<input id="show-grid" type="checkbox" bind:checked={showGrid} />
+
+		{#if activePolygon !== undefined}
+			<div>
+				<button disabled={!polygonClosed} on:click={stopEditingPolygon}>Done</button>
+				<button on:click={deleteCurrentPolygon}>Delete</button>
+			</div>
+		{/if}
 	</div>
 	<svg width="100%" height="100%">
 		{#each polygons as polygon (polygon)}
@@ -52,7 +92,8 @@
 				editMode={activePolygon !== undefined}
 				{gridX}
 				{gridY}
-				on:closed={polygonClosed}
+				on:closed={markPolygonClosed}
+				on:contextmenu={onContextMenu}
 			/>
 		{/each}
 	</svg>

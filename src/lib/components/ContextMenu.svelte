@@ -1,0 +1,38 @@
+<script lang="ts">
+	import { createEventDispatcher, onMount } from 'svelte';
+
+	export let polygonId: string;
+	export let x: number;
+	export let y: number;
+	export let open: boolean;
+
+	const dispatch = createEventDispatcher<{
+		edit: { polygonId: string };
+	}>();
+
+	onMount(() => {
+		document.addEventListener('click', close);
+
+		return () => {
+			document.removeEventListener('click', close);
+		};
+	});
+
+	function close() {
+		open = false;
+	}
+</script>
+
+{#if open}
+	<div class="context-menu" style="--left: {x}px; --top: {y}px">
+		<button on:click={() => dispatch('edit', { polygonId })}>Edit</button>
+	</div>
+{/if}
+
+<style>
+	.context-menu {
+		position: absolute;
+		left: var(--left);
+		top: var(--top);
+	}
+</style>

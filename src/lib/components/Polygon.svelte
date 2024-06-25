@@ -8,7 +8,10 @@
 	export let editMode = false;
 	export let disabled = false;
 
-	const dispatch = createEventDispatcher<{ closed: {} }>();
+	const dispatch = createEventDispatcher<{
+		closed: {};
+		contextmenu: { originalEvent: MouseEvent; polygonId: string };
+	}>();
 
 	let points: Point[] = [];
 	let dragTarget: Point | undefined = undefined;
@@ -21,6 +24,8 @@
 	$: if (!editing) {
 		document.removeEventListener('mousemove', onDrag);
 		dragTarget = undefined;
+	} else {
+		document.addEventListener('mousemove', onDrag);
 	}
 
 	onMount(() => {
@@ -73,6 +78,7 @@
 	}
 
 	function pointClicked(point: Point) {
+		console.log('editing', editing);
 		if (!editing) return;
 		if (point.dragged) {
 			delete point.dragged;
@@ -124,6 +130,11 @@
 		points = points;
 	}
 
+	function handleContextMenu(e: MouseEvent) {
+		if (editMode || editing) return;
+		dispatch('contextmenu', { originalEvent: e, polygonId: id });
+	}
+
 	interface Point {
 		x: number;
 		y: number;
@@ -143,6 +154,7 @@
 	--opacity:{opacity};
 	--pointer-events:{disabled ? 'none' : 'all'};
 	--cursor:{disabled || editing ? 'default' : 'pointer'};"
+	on:contextmenu={handleContextMenu}
 />
 {#if editing}
 	{#each points as point, i}
