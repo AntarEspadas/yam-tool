@@ -3,6 +3,7 @@
 	import Polygon from '$lib/components/Polygon.svelte';
 	import ContextMenu from '$lib/components/ContextMenu.svelte';
 	import { polygonService } from '$lib/services/PolygonService';
+	import { areaDetailsService } from '$lib/services/AreaDetailsService';
 	import type { AreaDetails } from '$lib/types';
 	import AreaDetailsComponent from '$lib/components/AreaDetails.svelte';
 	import AreaDetailsEditor from '$lib/components/AreaDetailsEditor.svelte';
@@ -33,6 +34,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 
 	onMount(() => {
 		const savedPolygons = polygonService.getPolygons();
+		areas = areaDetailsService.getAreaDetails();
 		for (const polygon in savedPolygons) {
 			polygons.push(polygon);
 		}
@@ -60,8 +62,9 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 		editTarget = undefined;
 	}
 
-	function stopEditingPolygon() {
+	function stopEditing() {
 		editTarget = undefined;
+		areaDetailsService.saveAreaDetails(areas);
 	}
 
 	function markPolygonClosed() {
@@ -130,7 +133,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 			bind:name={areas[editTarget].name}
 			bind:description={areas[editTarget].description}
 			forceDisableSubmit={!polygonClosed}
-			on:submit={stopEditingPolygon}
+			on:submit={stopEditing}
 			on:delete={deleteCurrentArea}
 		/>
 	{/if}
