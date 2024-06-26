@@ -5,12 +5,14 @@
 	export let x: number;
 	export let y: number;
 	export let open: boolean;
+	export let autoclose = true;
 
 	const dispatch = createEventDispatcher<{
 		edit: { polygonId: string };
 	}>();
 
 	onMount(() => {
+		if (!autoclose) return;
 		document.addEventListener('click', close);
 
 		return () => {
@@ -24,7 +26,10 @@
 </script>
 
 {#if open}
-	<div class="context-menu" style="--left: {x}px; --top: {y}px">
+	<div
+		class="context-menu variant-filled-surface btn-group-vertical"
+		style="--left: {x}px; --top: {y}px"
+	>
 		<button on:click={() => dispatch('edit', { polygonId })}>Edit</button>
 	</div>
 {/if}
@@ -34,5 +39,10 @@
 		position: absolute;
 		left: var(--left);
 		top: var(--top);
+	}
+
+	button {
+		margin-left: 7px;
+		margin-right: 7px;
 	}
 </style>
