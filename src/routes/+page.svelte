@@ -8,6 +8,8 @@
 	import AreaDetailsComponent from '$lib/components/AreaDetails.svelte';
 	import AreaDetailsEditor from '$lib/components/AreaDetailsEditor.svelte';
 
+	let mapRef: HTMLElement;
+
 	let polygons: string[] = [];
 	let editTarget: string | undefined = undefined;
 	let polygonClosed = true;
@@ -99,69 +101,86 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 	}
 </script>
 
-<div class="map">
-	<ContextMenu
-		bind:open={showContextMenu}
-		x={contextMenuX}
-		y={contextMenuY}
-		polygonId={contextMenuTarget}
-		on:edit={onEdit}
-	/>
-	{#if showGrid}
-		<div class="grid" style="--grid-x:{gridX}px; --grid-y:{gridY}px"></div>
-	{/if}
-	<div class="controls">
-		<button class="add-button" disabled={editTarget !== undefined} on:click={addPolygon}>Add</button
-		>
-		<label for="grid-x">Grid X</label>
-		<input id="grid-x" type="number" bind:value={gridX} />
-		<label for="grid-y">Grid Y</label>
-		<input id="grid-y" type="number" bind:value={gridY} />
-		<label for="show-grid">Grid Y</label>
-		<input id="show-grid" type="checkbox" bind:checked={showGrid} />
+<div class="container">
+	<div class="map" bind:this={mapRef}>
+		{#if showGrid}
+			<div class="grid" style="--grid-x:{gridX}px; --grid-y:{gridY}px"></div>
+		{/if}
+
+		<svg width="100%" height="100%">
+			{#each polygons as polygon (polygon)}
+				<Polygon
+					id={polygon}
+					editing={polygon === editTarget}
+					disabled={editTarget !== undefined && polygon !== editTarget}
+					editMode={editTarget !== undefined}
+					{gridX}
+					{gridY}
+					parent={mapRef}
+					on:closed={markPolygonClosed}
+					on:contextmenu={onContextMenu}
+					on:click={handlePolygonClicked}
+				/>
+			{/each}
+		</svg>
 	</div>
-	{#if activeAreaDetails !== undefined && editTarget === undefined}
-		<AreaDetailsComponent
-			identifier={activeAreaDetails.identifier}
-			name={activeAreaDetails.name}
-			description={activeAreaDetails.description}
-		/>
-	{:else if editTarget !== undefined}
-		<AreaDetailsEditor
-			id={editTarget}
-			bind:identifier={areas[editTarget].identifier}
-			bind:name={areas[editTarget].name}
-			bind:description={areas[editTarget].description}
-			forceDisableSubmit={!polygonClosed}
-			on:submit={stopEditing}
-			on:delete={deleteCurrentArea}
-		/>
-	{/if}
-	<svg width="100%" height="100%">
-		{#each polygons as polygon (polygon)}
-			<Polygon
-				id={polygon}
-				editing={polygon === editTarget}
-				disabled={editTarget !== undefined && polygon !== editTarget}
-				editMode={editTarget !== undefined}
-				{gridX}
-				{gridY}
-				on:closed={markPolygonClosed}
-				on:contextmenu={onContextMenu}
-				on:click={handlePolygonClicked}
-			/>
-		{/each}
-	</svg>
+
+	<div>
+		<div class="controls">
+			<button class="add-button" disabled={editTarget !== undefined} on:click={addPolygon}
+				>Add</button
+			>
+			<label for="grid-x">Grid X</label>
+			<input id="grid-x" type="number" bind:value={gridX} />
+			<label for="grid-y">Grid Y</label>
+			<input id="grid-y" type="number" bind:value={gridY} />
+			<label for="show-grid">Grid Y</label>
+			<input id="show-grid" type="checkbox" bind:checked={showGrid} />
+		</div>
+
+		<div class="area-details-container">
+			{#if activeAreaDetails !== undefined && editTarget === undefined}
+				<AreaDetailsComponent
+					identifier={activeAreaDetails.identifier}
+					name={activeAreaDetails.name}
+					description={activeAreaDetails.description}
+				/>
+			{:else if editTarget !== undefined}
+				<AreaDetailsEditor
+					id={editTarget}
+					bind:identifier={areas[editTarget].identifier}
+					bind:name={areas[editTarget].name}
+					bind:description={areas[editTarget].description}
+					forceDisableSubmit={!polygonClosed}
+					on:submit={stopEditing}
+					on:delete={deleteCurrentArea}
+				/>
+			{/if}
+		</div>
+	</div>
 </div>
 
+<ContextMenu
+	bind:open={showContextMenu}
+	x={contextMenuX}
+	y={contextMenuY}
+	polygonId={contextMenuTarget}
+	on:edit={onEdit}
+/>
+
 <style>
+	.container {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		column-gap: 10px;
+	}
+
 	.map {
 		background-image: url('/first-floor.png');
-		background-size: contain;
+		background-size: cover;
 		background-repeat: no-repeat;
-		width: 100%;
+		aspect-ratio: 1317/2141;
 		height: 800px;
-		position: absolute;
 	}
 
 	.grid {
@@ -175,17 +194,14 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 	}
 
 	.controls {
-		position: absolute;
 		right: 0;
 		display: flex;
 		flex-direction: column;
 	}
 
-	.map :global(.area-details),
-	:global(.area-details-editor) {
-		position: absolute;
-		right: 500px;
-		transform: translateX(500px);
+	.area-details-container {
+		right: 0px;
 		top: 200px;
+		width: 450px;
 	}
 </style>

@@ -9,6 +9,7 @@
 	export let gridY: number;
 	export let editMode = false;
 	export let disabled = false;
+	export let parent: HTMLElement;
 
 	const dispatch = createEventDispatcher<{
 		closed: {};
@@ -29,24 +30,24 @@
 	$: svgPoints = getSvgPoints(points, closed, gridX, gridY);
 
 	$: if (!editing) {
-		document.removeEventListener('mousemove', onDrag);
+		parent.removeEventListener('mousemove', onDrag);
 		dragTarget = undefined;
 		save(mounted);
 	} else {
-		document.addEventListener('mousemove', onDrag);
+		parent.addEventListener('mousemove', onDrag);
 	}
 
 	onMount(() => {
-		document.addEventListener('mousemove', onDrag);
-		document.addEventListener('mousedown', addPoint);
-		document.addEventListener('mouseup', mouseUp);
+		parent.addEventListener('mousemove', onDrag);
+		parent.addEventListener('mousedown', addPoint);
+		parent.addEventListener('mouseup', mouseUp);
 
 		mounted = true;
 
 		return () => {
-			document.removeEventListener('mousemove', onDrag);
-			document.removeEventListener('mousedown', addPoint);
-			document.removeEventListener('mouseup', mouseUp);
+			parent.removeEventListener('mousemove', onDrag);
+			parent.removeEventListener('mousedown', addPoint);
+			parent.removeEventListener('mouseup', mouseUp);
 		};
 	});
 
