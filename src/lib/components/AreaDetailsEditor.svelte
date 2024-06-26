@@ -26,15 +26,25 @@
 </script>
 
 <form class="area-details-editor" on:submit|preventDefault={handleSubmit}>
-	<label for="identifier-input">Identifier</label>
-	<input id="identifier-input" type="text" bind:value={identifier} />
+	<label class="label"
+		><span>Identifier</span>
+		<input class="input" type="text" bind:value={identifier} />
+	</label>
 
-	<label for="name-input">Name</label>
-	<input id="name-input" type="text" bind:value={name} />
+	<label class="label"
+		><span>Name</span>
+		<input class="input" type="text" bind:value={name} />
+	</label>
 
-	<label for="description-input"></label>
-	<textarea id="description-input" bind:value={description}></textarea>
+	<label class="label"
+		><span>Description</span>
+		<textarea class="textarea" bind:value={description}></textarea>
+	</label>
 
-	<button type="submit" disabled={!valid || forceDisableSubmit}>Done</button>
-	<button on:click={handleDelete}>Delete</button>
+	<button
+		class="variant-ghost-primary btn mt-2"
+		type="submit"
+		disabled={!valid || forceDisableSubmit}>Done</button
+	>
+	<button class="variant-ghost-error btn" type="button" on:click={handleDelete}>Delete</button>
 </form>
