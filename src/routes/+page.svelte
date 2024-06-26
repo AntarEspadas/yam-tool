@@ -130,12 +130,18 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 			<button class="add-button" disabled={editTarget !== undefined} on:click={addPolygon}
 				>Add</button
 			>
-			<label for="grid-x">Grid X</label>
-			<input id="grid-x" type="number" bind:value={gridX} />
-			<label for="grid-y">Grid Y</label>
-			<input id="grid-y" type="number" bind:value={gridY} />
-			<label for="show-grid">Grid Y</label>
-			<input id="show-grid" type="checkbox" bind:checked={showGrid} />
+			<label class="label"
+				><span>Grid X</span>
+				<input class="input" type="number" bind:value={gridX} />
+			</label>
+			<label class="label"
+				><span>Grid Y</span>
+				<input class="input" type="number" bind:value={gridY} />
+			</label>
+			<label>
+				<input class="checkbox" type="checkbox" bind:checked={showGrid} />
+				<span>Show grid</span>
+			</label>
 		</div>
 
 		<div class="area-details-container">
