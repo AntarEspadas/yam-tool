@@ -48,3 +48,9 @@
 	>
 	<button class="variant-ghost-error btn" type="button" on:click={handleDelete}>Delete</button>
 </form>
+
+<style>
+	textarea {
+		height: 300px;
+	}
+</style>
