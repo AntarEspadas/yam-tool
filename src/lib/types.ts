@@ -8,3 +8,9 @@ export interface Point {
 export interface Polygon {
 	points: Point[];
 }
+
+export interface AreaDetails {
+	identifier: string;
+	name: string;
+	description: string;
+}

@@ -13,6 +13,8 @@
 	const dispatch = createEventDispatcher<{
 		closed: {};
 		contextmenu: { originalEvent: MouseEvent; polygonId: string };
+		click: { originalEvent: MouseEvent; polygonId: string };
+		keydown: { originalEvent: KeyboardEvent; polygonId: string };
 	}>();
 
 	let points: Point[] = [];
@@ -155,6 +157,16 @@
 		if (editMode || editing) return;
 		dispatch('contextmenu', { originalEvent: e, polygonId: id });
 	}
+
+	function handleClick(e: MouseEvent) {
+		if (editMode || editing) return;
+		dispatch('click', { originalEvent: e, polygonId: id });
+	}
+
+	function handleKeyDown(e: KeyboardEvent) {
+		if (editMode || editing) return;
+		dispatch('keydown', { originalEvent: e, polygonId: id });
+	}
 </script>
 
 <path
@@ -164,7 +176,11 @@
 	--opacity:{opacity};
 	--pointer-events:{disabled ? 'none' : 'all'};
 	--cursor:{disabled || editing ? 'default' : 'pointer'};"
+	role="button"
+	tabindex="0"
 	on:contextmenu={handleContextMenu}
+	on:click={handleClick}
+	on:keydown={handleKeyDown}
 />
 {#if editing}
 	{#each points as point, i}
