@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount, createEventDispatcher } from 'svelte';
+	import type { Point } from '$lib/types';
+	import { polygonService } from '$lib/services/PolygonService';
 
 	export let editing = false;
 	export let id: string;
@@ -16,17 +18,18 @@
 	let points: Point[] = [];
 	let dragTarget: Point | undefined = undefined;
 	let closed = false;
+	let mounted = false;
 
 	$: opacity = editMode ? 1 : 0;
 
-	$: load(id);
+	$: load(id, mounted);
 
 	$: svgPoints = getSvgPoints(points, closed, gridX, gridY);
 
 	$: if (!editing) {
 		document.removeEventListener('mousemove', onDrag);
 		dragTarget = undefined;
-		save();
+		save(mounted);
 	} else {
 		document.addEventListener('mousemove', onDrag);
 	}
@@ -36,6 +39,8 @@
 		document.addEventListener('mousedown', addPoint);
 		document.addEventListener('mouseup', mouseUp);
 
+		mounted = true;
+
 		return () => {
 			document.removeEventListener('mousemove', onDrag);
 			document.removeEventListener('mousedown', addPoint);
@@ -43,15 +48,15 @@
 		};
 	});
 
-	function save() {
-		const polygons = JSON.parse(localStorage.getItem('polygons')) ?? {};
-		polygons[id] = { points };
-		localStorage.setItem('polygons', JSON.stringify(polygons));
+	function save(mounted: boolean) {
+		if (!mounted) return;
+		polygonService.savePolygon(id, { points });
 	}
 
-	function load(id: string) {
-		const polygons = JSON.parse(localStorage.getItem('polygons')) ?? {};
-		points = polygons[id]?.points ?? [];
+	function load(id: string, mounted: boolean) {
+		if (!mounted) return;
+		const polygon = polygonService.getPolygon(id);
+		points = polygon?.points ?? [];
 		if (points.length !== 0) {
 			closed = true;
 		}
@@ -149,17 +154,6 @@
 	function handleContextMenu(e: MouseEvent) {
 		if (editMode || editing) return;
 		dispatch('contextmenu', { originalEvent: e, polygonId: id });
-	}
-
-	interface Point {
-		x: number;
-		y: number;
-		first: boolean;
-		dragged?: boolean;
-	}
-
-	interface Polygon {
-		points: Point[];
 	}
 </script>
 

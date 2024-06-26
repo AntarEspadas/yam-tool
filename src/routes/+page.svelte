@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import Polygon from '$lib/components/Polygon.svelte';
 	import ContextMenu from '$lib/components/ContextMenu.svelte';
+	import { polygonService } from '$lib/services/PolygonService';
 
 	let polygons: string[] = [];
 	let activePolygon: string | undefined = undefined;
@@ -16,7 +17,7 @@
 	let contextMenuTarget: string;
 
 	onMount(() => {
-		const savedPolygons = JSON.parse(localStorage.getItem('polygons')) ?? {};
+		const savedPolygons = polygonService.getPolygons();
 		for (const polygon in savedPolygons) {
 			polygons.push(polygon);
 		}
@@ -33,9 +34,7 @@
 
 	function deleteCurrentPolygon() {
 		polygons = polygons.filter((p) => p !== activePolygon);
-		const savedPolygons = JSON.parse(localStorage.getItem('polygons')) ?? {};
-		delete savedPolygons[activePolygon];
-		localStorage.setItem('polygons', JSON.stringify(savedPolygons));
+		polygonService.deletePolygon(activePolygon);
 		activePolygon = undefined;
 	}
 
