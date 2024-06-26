@@ -1,21 +1,17 @@
 <script context="module" lang="ts">
 	import { Story, Template } from '@storybook/addon-svelte-csf';
 	import type { Meta } from '@storybook/svelte';
-	import AreaDetailsEditor from '$lib/components/AreaDetailsEditor.svelte';
+	import AreaDetailsForm from '$lib/components/AreaDetailsForm.svelte';
 
-	export const meta: Meta<AreaDetailsEditor> = {
-		title: 'components/Area details editor',
-		component: AreaDetailsEditor,
+	export const meta: Meta<AreaDetailsForm> = {
+		title: 'components/Area details form',
+		component: AreaDetailsForm,
 		tags: ['autodocs']
 	};
 </script>
 
-<!-- <Template let:args>
-	<AreaDetailsEditor {...args} />
-</Template> -->
-
 <Story name="Default">
-	<AreaDetailsEditor
+	<AreaDetailsForm
 		id="story-area"
 		identifier=""
 		name=""

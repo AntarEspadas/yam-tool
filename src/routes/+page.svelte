@@ -6,7 +6,7 @@
 	import { areaDetailsService } from '$lib/services/AreaDetailsService';
 	import type { AreaDetails } from '$lib/types';
 	import AreaDetailsComponent from '$lib/components/AreaDetails.svelte';
-	import AreaDetailsEditor from '$lib/components/AreaDetailsEditor.svelte';
+	import AreaDetailsForm from '$lib/components/AreaDetailsForm.svelte';
 
 	let mapRef: HTMLElement;
 
@@ -152,7 +152,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 					description={activeAreaDetails.description}
 				/>
 			{:else if editTarget !== undefined}
-				<AreaDetailsEditor
+				<AreaDetailsForm
 					id={editTarget}
 					bind:identifier={areas[editTarget].identifier}
 					bind:name={areas[editTarget].name}
