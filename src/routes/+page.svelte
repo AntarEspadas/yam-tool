@@ -127,7 +127,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 
 	<div>
 		<div class="controls">
-			<button class="add-button" disabled={editTarget !== undefined} on:click={addPolygon}
+			<button class="variant-filled btn" disabled={editTarget !== undefined} on:click={addPolygon}
 				>Add</button
 			>
 			<label class="label"
