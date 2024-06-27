@@ -108,10 +108,6 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 
 <div class="container">
 	<div class="map" bind:this={mapRef}>
-		{#if showGrid}
-			<div class="grid" style="--grid-x:{gridX}px; --grid-y:{gridY}px"></div>
-		{/if}
-
 		<svg width="100%" height="100%">
 			{#each polygons as polygon (polygon)}
 				<Polygon
@@ -130,6 +126,10 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 				/>
 			{/each}
 		</svg>
+
+		{#if showGrid}
+			<div class="grid" style="--grid-x:{gridX}px; --grid-y:{gridY}px"></div>
+		{/if}
 	</div>
 
 	<div>
@@ -193,7 +193,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 		background-image: repeating-linear-gradient(#ccc 0 1px, transparent 1px 100%),
 			repeating-linear-gradient(90deg, #ccc 0 1px, transparent 1px 100%);
 		background-size: var(--grid-x) var(--grid-y);
-		position: absolute;
+		transform: translateY(-100%);
 	}
 
 	.area-details-container {
