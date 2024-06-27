@@ -94,6 +94,7 @@
 	function addPoint(e: MouseEvent) {
 		if (!allowEdit) return;
 		if (closed) return;
+		if (e.button !== 0) return;
 		const [x, y] = snap(e.clientX, e.clientY, gridX, gridY);
 		points.push({
 			x,
