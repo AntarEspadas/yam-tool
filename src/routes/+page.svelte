@@ -8,6 +8,7 @@
 	import AreaDetailsComponent from '$lib/components/AreaDetails.svelte';
 	import AreaDetailsForm from '$lib/components/AreaDetailsForm.svelte';
 	import AreaList from '$lib/components/AreaList.svelte';
+	import GridSettings from '$lib/components/GridSettings.svelte';
 
 	let mapRef: HTMLElement;
 
@@ -132,20 +133,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 	</div>
 
 	<div>
-		<div class="controls">
-			<label class="label"
-				><span>Grid X</span>
-				<input class="input" type="number" bind:value={gridX} />
-			</label>
-			<label class="label"
-				><span>Grid Y</span>
-				<input class="input" type="number" bind:value={gridY} />
-			</label>
-			<label>
-				<input class="checkbox" type="checkbox" bind:checked={showGrid} />
-				<span>Show grid</span>
-			</label>
-		</div>
+		<GridSettings bind:gridX bind:gridY bind:showGrid />
 
 		<div class="area-details-container">
 			{#if activeArea !== undefined && editTarget === undefined}
@@ -208,15 +196,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 		position: absolute;
 	}
 
-	.controls {
-		right: 0;
-		display: flex;
-		flex-direction: column;
-	}
-
 	.area-details-container {
-		right: 0px;
-		top: 200px;
-		width: 450px;
+		margin-top: 1rem;
 	}
 </style>
