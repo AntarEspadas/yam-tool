@@ -9,6 +9,7 @@
 	import AreaDetailsForm from '$lib/components/AreaDetailsForm.svelte';
 	import AreaList from '$lib/components/AreaList.svelte';
 	import GridSettings from '$lib/components/GridSettings.svelte';
+	import Map from '$lib/components/Map.svelte';
 
 	let mapRef: HTMLElement;
 
@@ -107,10 +108,11 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 </script>
 
 <div class="container">
-	<div class="map" bind:this={mapRef}>
+	<Map {gridX} {gridY} {showGrid} src="/first-floor.png" let:ref>
 		<svg width="100%" height="100%">
 			{#each polygons as polygon (polygon)}
 				<Polygon
+					parent={ref}
 					id={polygon}
 					allowEdit={polygon === editTarget}
 					disabled={editTarget !== undefined && polygon !== editTarget}
@@ -119,18 +121,13 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 						polygon == contextMenuTarget}
 					{gridX}
 					{gridY}
-					parent={mapRef}
 					on:closed={markPolygonClosed}
 					on:contextmenu={onContextMenu}
 					on:click={handlePolygonClicked}
 				/>
 			{/each}
 		</svg>
-
-		{#if showGrid}
-			<div class="grid" style="--grid-x:{gridX}px; --grid-y:{gridY}px"></div>
-		{/if}
-	</div>
+	</Map>
 
 	<div>
 		<GridSettings bind:gridX bind:gridY bind:showGrid />
@@ -176,24 +173,6 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 		display: grid;
 		grid-template-columns: auto 2fr 1fr;
 		column-gap: 10px;
-	}
-
-	.map {
-		background-image: url('/first-floor.png');
-		background-size: cover;
-		background-repeat: no-repeat;
-		aspect-ratio: 1317/2141;
-		height: 800px;
-	}
-
-	.grid {
-		pointer-events: none;
-		width: 100%;
-		height: 100%;
-		background-image: repeating-linear-gradient(#ccc 0 1px, transparent 1px 100%),
-			repeating-linear-gradient(90deg, #ccc 0 1px, transparent 1px 100%);
-		background-size: var(--grid-x) var(--grid-y);
-		transform: translateY(-100%);
 	}
 
 	.area-details-container {
