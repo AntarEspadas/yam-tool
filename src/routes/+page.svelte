@@ -133,9 +133,6 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 
 	<div>
 		<div class="controls">
-			<button class="variant-filled btn" disabled={editTarget !== undefined} on:click={addPolygon}
-				>Add</button
-			>
 			<label class="label"
 				><span>Grid X</span>
 				<input class="input" type="number" bind:value={gridX} />
@@ -170,7 +167,12 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 			{/if}
 		</div>
 	</div>
-	<AreaList {areas} bind:value={activeArea} />
+	<AreaList
+		{areas}
+		disableAddButton={editTarget !== undefined}
+		bind:value={activeArea}
+		on:addClick={addPolygon}
+	/>
 </div>
 
 <ContextMenu
