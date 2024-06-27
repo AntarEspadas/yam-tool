@@ -115,9 +115,11 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 			{#each polygons as polygon (polygon)}
 				<Polygon
 					id={polygon}
-					editing={polygon === editTarget}
+					allowEdit={polygon === editTarget}
 					disabled={editTarget !== undefined && polygon !== editTarget}
-					editMode={editTarget !== undefined}
+					forceShow={editTarget !== undefined ||
+						polygon == activeArea ||
+						polygon == contextMenuTarget}
 					{gridX}
 					{gridY}
 					parent={mapRef}
@@ -173,9 +175,9 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 
 <ContextMenu
 	bind:open={showContextMenu}
+	bind:polygonId={contextMenuTarget}
 	x={contextMenuX}
 	y={contextMenuY}
-	polygonId={contextMenuTarget}
 	on:edit={onEdit}
 />
 

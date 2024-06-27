@@ -3,13 +3,14 @@
 	import type { Point } from '$lib/types';
 	import { polygonService } from '$lib/services/PolygonService';
 
-	export let editing = false;
+	export let allowEdit = false;
 	export let id: string;
 	export let gridX: number;
 	export let gridY: number;
-	export let editMode = false;
+	// export let editMode = false;
 	export let disabled = false;
 	export let parent: HTMLElement;
+	export let forceShow = false;
 
 	const dispatch = createEventDispatcher<{
 		closed: {};
@@ -23,13 +24,13 @@
 	let closed = false;
 	let mounted = false;
 
-	$: opacity = editMode ? 1 : 0;
+	$: opacity = forceShow ? 1 : 0;
 
 	$: load(id, mounted);
 
 	$: svgPoints = getSvgPoints(points, closed, gridX, gridY);
 
-	$: if (!editing) {
+	$: if (!allowEdit) {
 		parent.removeEventListener('mousemove', onDrag);
 		dragTarget = undefined;
 		save(mounted);
@@ -91,7 +92,7 @@
 	}
 
 	function addPoint(e: MouseEvent) {
-		if (!editing) return;
+		if (!allowEdit) return;
 		if (closed) return;
 		const [x, y] = snap(e.clientX, e.clientY, gridX, gridY);
 		points.push({
@@ -103,7 +104,7 @@
 	}
 
 	function pointClicked(point: Point) {
-		if (!editing) return;
+		if (!allowEdit) return;
 		if (point.dragged) {
 			delete point.dragged;
 			return;
@@ -115,17 +116,17 @@
 	}
 
 	function pointMouseDown(point: Point) {
-		if (!editing) return;
+		if (!allowEdit) return;
 		dragTarget = point;
 	}
 
 	function mouseUp() {
-		if (!editing) return;
+		if (!allowEdit) return;
 		dragTarget = undefined;
 	}
 
 	function onDrag(e: MouseEvent) {
-		if (!editing) return;
+		if (!allowEdit) return;
 		if (dragTarget === undefined) return;
 		const [x, y] = snap(e.clientX, e.clientY, gridX, gridY);
 		dragTarget.x = x;
@@ -155,17 +156,17 @@
 	}
 
 	function handleContextMenu(e: MouseEvent) {
-		if (editMode || editing) return;
+		if (allowEdit) return;
 		dispatch('contextmenu', { originalEvent: e, polygonId: id });
 	}
 
 	function handleClick(e: MouseEvent) {
-		if (editMode || editing) return;
+		if (allowEdit) return;
 		dispatch('click', { originalEvent: e, polygonId: id });
 	}
 
 	function handleKeyDown(e: KeyboardEvent) {
-		if (editMode || editing) return;
+		if (allowEdit) return;
 		dispatch('keydown', { originalEvent: e, polygonId: id });
 	}
 </script>
@@ -176,14 +177,14 @@
 	style="
 	--opacity:{opacity};
 	--pointer-events:{disabled ? 'none' : 'all'};
-	--cursor:{disabled || editing ? 'default' : 'pointer'};"
+	--cursor:{disabled || allowEdit ? 'default' : 'pointer'};"
 	role="button"
 	tabindex="0"
 	on:contextmenu={handleContextMenu}
 	on:click={handleClick}
 	on:keydown={handleKeyDown}
 />
-{#if editing}
+{#if allowEdit}
 	{#each points as point, i}
 		<circle
 			cx={point.x * gridX}

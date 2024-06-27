@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 
-	export let polygonId: string;
+	export let polygonId: string | undefined;
 	export let x: number;
 	export let y: number;
 	export let open: boolean;
 	export let autoclose = true;
 
 	const dispatch = createEventDispatcher<{
-		edit: { polygonId: string };
+		edit: { polygonId?: string };
 	}>();
 
 	onMount(() => {
@@ -22,6 +22,7 @@
 
 	function close() {
 		open = false;
+		polygonId = undefined;
 	}
 </script>
 
