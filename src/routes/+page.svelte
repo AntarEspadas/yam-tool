@@ -7,6 +7,7 @@
 	import type { AreaDetails } from '$lib/types';
 	import AreaDetailsComponent from '$lib/components/AreaDetails.svelte';
 	import AreaDetailsForm from '$lib/components/AreaDetailsForm.svelte';
+	import AreaList from '$lib/components/AreaList.svelte';
 
 	let mapRef: HTMLElement;
 
@@ -32,7 +33,8 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 		}
 	};
 
-	let activeAreaDetails: AreaDetails | undefined = undefined;
+	// let activeAreaDetails: AreaDetails | undefined = undefined;
+	let activeArea: string | undefined = undefined;
 
 	onMount(() => {
 		const savedPolygons = polygonService.getPolygons();
@@ -61,6 +63,8 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 		polygons = polygons.filter((p) => p !== editTarget);
 		polygonService.deletePolygon(editTarget);
 		delete areas[editTarget];
+		areaDetailsService.saveAreaDetails(areas);
+		areas = areas;
 		editTarget = undefined;
 	}
 
@@ -86,7 +90,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 		const id = e.detail.polygonId;
 		editTarget = id;
 		polygonClosed = true;
-		activeAreaDetails = undefined;
+		activeArea = undefined;
 		areas[id] ??= {
 			identifier: '',
 			name: '',
@@ -97,7 +101,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 	function handlePolygonClicked(e: CustomEvent) {
 		const { polygonId } = e.detail;
 		console.log(polygonId, 'clicked', e.detail);
-		activeAreaDetails = areas[polygonId];
+		activeArea = polygonId;
 	}
 </script>
 
@@ -145,11 +149,11 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 		</div>
 
 		<div class="area-details-container">
-			{#if activeAreaDetails !== undefined && editTarget === undefined}
+			{#if activeArea !== undefined && editTarget === undefined}
 				<AreaDetailsComponent
-					identifier={activeAreaDetails.identifier}
-					name={activeAreaDetails.name}
-					description={activeAreaDetails.description}
+					identifier={areas[activeArea].identifier}
+					name={areas[activeArea].name}
+					description={areas[activeArea].description}
 				/>
 			{:else if editTarget !== undefined}
 				<AreaDetailsForm
@@ -164,6 +168,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 			{/if}
 		</div>
 	</div>
+	<AreaList {areas} bind:value={activeArea} />
 </div>
 
 <ContextMenu
@@ -177,7 +182,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 <style>
 	.container {
 		display: grid;
-		grid-template-columns: auto 1fr;
+		grid-template-columns: auto 2fr 1fr;
 		column-gap: 10px;
 	}
 
