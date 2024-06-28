@@ -140,7 +140,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 	</Map>
 
 	<div>
-		<MapSettings bind:gridX bind:gridY bind:showGrid />
+		<MapSettings bind:gridX bind:gridY bind:showGrid on:change={handleMapImageChange} />
 
 		<div class="area-details-container">
 			{#if activeArea !== undefined && editTarget === undefined}

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Accordion, AccordionItem } from '@skeletonlabs/skeleton';
 	import { RangeSlider } from '@skeletonlabs/skeleton';
+	import { FileButton } from '@skeletonlabs/skeleton';
 
 	export let gridX: number;
 	export let gridY: number;
@@ -14,6 +15,13 @@
 		<span class="material-symbols-outlined" slot="lead">map</span>
 		<p slot="summary">Map settings</p>
 		<svelte:fragment slot="content">
+			<div class="file-input-container">
+				<FileButton name="map-file-input" accept="image/*" on:change>Select map image</FileButton>
+			</div>
+			<label>
+				<input class="checkbox" type="checkbox" bind:checked={showGrid} />
+				<span>Show grid</span>
+			</label>
 			<label class="label"
 				><span>Grid X</span>
 				<br />
@@ -26,10 +34,6 @@
 				<input class="input" type="number" bind:value={gridY} />
 			</label>
 			<RangeSlider name="grid-y" bind:value={gridY} min={5} max={150} step={0.25}></RangeSlider>
-			<label>
-				<input class="checkbox" type="checkbox" bind:checked={showGrid} />
-				<span>Show grid</span>
-			</label>
 		</svelte:fragment>
 	</AccordionItem>
 </Accordion>
@@ -37,5 +41,11 @@
 <style>
 	.input {
 		width: 5.5em;
+	}
+
+	.file-input-container {
+		width: 100%;
+		display: flex;
+		justify-content: center;
 	}
 </style>
