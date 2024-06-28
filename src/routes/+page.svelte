@@ -8,7 +8,7 @@
 	import AreaDetailsComponent from '$lib/components/AreaDetails.svelte';
 	import AreaDetailsForm from '$lib/components/AreaDetailsForm.svelte';
 	import AreaList from '$lib/components/AreaList.svelte';
-	import GridSettings from '$lib/components/GridSettings.svelte';
+	import MapSettings from '$lib/components/MapSettings.svelte';
 	import Map from '$lib/components/Map.svelte';
 	import { imageService } from '$lib/services/ImageService';
 
@@ -140,7 +140,7 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 	</Map>
 
 	<div>
-		<GridSettings bind:gridX bind:gridY bind:showGrid />
+		<MapSettings bind:gridX bind:gridY bind:showGrid />
 
 		<div class="area-details-container">
 			{#if activeArea !== undefined && editTarget === undefined}

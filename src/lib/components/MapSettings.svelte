@@ -11,8 +11,8 @@
 
 <Accordion>
 	<AccordionItem bind:open>
-		<span class="material-symbols-outlined" slot="lead">grid_4x4</span>
-		<p slot="summary">Grid settings</p>
+		<span class="material-symbols-outlined" slot="lead">map</span>
+		<p slot="summary">Map settings</p>
 		<svelte:fragment slot="content">
 			<label class="label"
 				><span>Grid X</span>
