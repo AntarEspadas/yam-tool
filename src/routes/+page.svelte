@@ -10,6 +10,7 @@
 	import AreaList from '$lib/components/AreaList.svelte';
 	import GridSettings from '$lib/components/GridSettings.svelte';
 	import Map from '$lib/components/Map.svelte';
+	import { imageService } from '$lib/services/ImageService';
 
 	let mapRef: HTMLElement;
 
@@ -24,6 +25,8 @@
 	let contextMenuX = 0;
 	let contextMenuY = 0;
 	let contextMenuTarget: string;
+
+	let mapSrc: string | undefined = undefined;
 
 	let areas: Record<string, AreaDetails> = {
 		'3b66dcf6-9586-4b18-8db6-1d076904beb8': {
@@ -105,10 +108,17 @@ Hanging on the south wall of the foyer is a shield emblazoned with a coat-of-arm
 		console.log(polygonId, 'clicked', e.detail);
 		activeArea = polygonId;
 	}
+
+	async function handleMapImageChange(e: Event) {
+		const target = e.target as HTMLInputElement;
+		const file = target.files?.[0];
+		if (file === undefined) return;
+		mapSrc = await imageService.fileToDataUrl(file);
+	}
 </script>
 
 <div class="container">
-	<Map {gridX} {gridY} {showGrid} src="/first-floor.png" let:ref>
+	<Map {gridX} {gridY} {showGrid} bind:src={mapSrc} let:ref on:change={handleMapImageChange}>
 		<svg width="100%" height="100%">
 			{#each polygons as polygon (polygon)}
 				<Polygon

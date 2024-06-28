@@ -13,9 +13,10 @@
 </script>
 
 <Template let:args>
-	<Map gridX={61.5} gridY={61.5} src={image} showGrid={false} {...args} />
+	<Map gridX={61.5} gridY={61.5} src={image} showGrid={false} on:change {...args} />
 </Template>
 
 <Story name="Grid on" args={{ showGrid: true }} />
 <Story name="Grid off" />
 <Story name="Different image" args={{ src: image2 }} />
+<Story name="No image" args={{ src: undefined }} />
