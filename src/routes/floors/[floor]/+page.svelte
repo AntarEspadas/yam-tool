@@ -1,19 +1,18 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
+	import { polygonService } from '$lib/services/PolygonService';
+	import { imageService } from '$lib/services/ImageService';
+	import { floorService } from '$lib/services/FloorService';
+	import { areaService } from '$lib/services/AreaService';
+	import { liveQuery } from 'dexie';
+	import { debounce } from '$lib/util';
 	import Polygon from '$lib/components/Polygon.svelte';
 	import ContextMenu from '$lib/components/ContextMenu.svelte';
-	import { polygonService } from '$lib/services/PolygonService';
-	import type { Area } from '$lib/types';
 	import AreaDetailsComponent from '$lib/components/AreaDetails.svelte';
 	import AreaDetailsForm from '$lib/components/AreaDetailsForm.svelte';
 	import AreaList from '$lib/components/AreaList.svelte';
 	import MapSettings from '$lib/components/MapSettings.svelte';
 	import Map from '$lib/components/Map.svelte';
-	import { imageService } from '$lib/services/ImageService';
-	import type { PageData } from './$types';
-	import { floorService } from '$lib/services/FloorService';
-	import { areaService } from '$lib/services/AreaService';
-	import { liveQuery } from 'dexie';
 
 	export let data: PageData;
 
@@ -48,6 +47,8 @@
 		if (activeAreaId === undefined) return undefined;
 		return await areaService.getAreaById(activeAreaId!);
 	});
+
+	$: saveGrid(floor.grid.x, floor.grid.y, floor.grid.visible);
 
 	async function addPolygon() {
 		const id = await areaService.addArea(floor.id);
@@ -115,6 +116,10 @@
 		floor.image = await imageService.fileToDataUrl(file);
 		await floorService.saveFloor(floor);
 	}
+
+	const saveGrid = debounce(async (x: number, y: number, visible: boolean) => {
+		await floorService.saveFloor({ ...floor, grid: { x, y, visible } });
+	}, 500);
 </script>
 
 <div class="container">
@@ -150,7 +155,7 @@
 	<div>
 		<MapSettings
 			bind:gridX={floor.grid.x}
-			bind:gridY={floor.grid.x}
+			bind:gridY={floor.grid.y}
 			bind:showGrid={floor.grid.visible}
 			on:change={handleMapImageChange}
 		/>
