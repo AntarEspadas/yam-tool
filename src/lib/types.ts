@@ -6,10 +6,14 @@ export interface Point {
 }
 
 export interface Polygon {
+	id: string;
+	floorId: number;
 	points: Point[];
 }
 
-export interface AreaDetails {
+export interface Area {
+	id: string;
+	floorId: number;
 	identifier: string;
 	name: string;
 	description: string;
@@ -22,7 +26,14 @@ export interface Grid {
 }
 
 export interface Floor {
+	id: number;
+	mapId: number;
 	image?: string;
 	grid: Grid;
-	areas: Record<string, AreaDetails>;
+	areas: Record<string, Area>;
+}
+
+export interface Map {
+	id: number;
+	name: string;
 }

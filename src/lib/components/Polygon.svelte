@@ -5,6 +5,7 @@
 
 	export let allowEdit = false;
 	export let id: string;
+	export let floorId: number;
 	export let gridX: number;
 	export let gridY: number;
 	// export let editMode = false;
@@ -22,7 +23,9 @@
 	let points: Point[] = [];
 	let dragTarget: Point | undefined = undefined;
 	let closed = false;
+
 	let mounted = false;
+	let loaded = false;
 
 	$: opacity = forceShow ? 1 : 0;
 
@@ -33,7 +36,7 @@
 	$: if (!allowEdit) {
 		parent.removeEventListener('mousemove', onDrag);
 		dragTarget = undefined;
-		save(mounted);
+		save(mounted, loaded);
 	} else {
 		parent.addEventListener('mousemove', onDrag);
 	}
@@ -52,18 +55,20 @@
 		};
 	});
 
-	function save(mounted: boolean) {
+	function save(mounted: boolean, loaded: boolean) {
 		if (!mounted) return;
-		polygonService.savePolygon(id, { points });
+		if (!loaded) return;
+		polygonService.savePolygon({ id, floorId, points });
 	}
 
-	function load(id: string, mounted: boolean) {
+	async function load(id: string, mounted: boolean) {
 		if (!mounted) return;
-		const polygon = polygonService.getPolygon(id);
+		const polygon = await polygonService.getPolygon(id);
 		points = polygon?.points ?? [];
 		if (points.length !== 0) {
 			closed = true;
 		}
+		loaded = true;
 	}
 
 	function getSvgPoints(points: Point[], closed: boolean, girdX: number, gridY: number) {

@@ -1,30 +1,26 @@
 import type { Polygon } from '$lib/types';
+import { type MapDb, db } from '$lib/db/indext';
 
 export class PolygonService {
 	private static readonly KEY = 'polygons';
 
-	public getPolygons() {
-		const serializedPolygons = localStorage.getItem(PolygonService.KEY) as string;
-		return (JSON.parse(serializedPolygons) ?? {}) as Record<string, Polygon>;
+	constructor(private db: MapDb) {}
+
+	public getPolygonsByFloor(floorId: number) {
+		return this.db.polygons.where('floorId').equals(floorId).toArray();
 	}
 
-	public getPolygon(id: string): Polygon | undefined {
-		return this.getPolygons()[id];
+	public getPolygon(id: string) {
+		return this.db.polygons.where('id').equals(id).first();
 	}
 
-	public savePolygon(id: string, polygon: Polygon) {
-		const polygons = this.getPolygons();
-		polygons[id] = polygon;
-		const serializedPolygons = JSON.stringify(polygons);
-		localStorage.setItem(PolygonService.KEY, serializedPolygons);
+	public savePolygon(polygon: Polygon) {
+		return this.db.polygons.put(polygon);
 	}
 
 	public deletePolygon(id: string) {
-		const polygons = this.getPolygons();
-		delete polygons[id];
-		const serializedPolygons = JSON.stringify(polygons);
-		localStorage.setItem(PolygonService.KEY, serializedPolygons);
+		return this.db.polygons.delete(id);
 	}
 }
 
-export const polygonService = new PolygonService();
+export const polygonService = new PolygonService(db);

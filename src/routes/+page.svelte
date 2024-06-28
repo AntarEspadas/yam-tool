@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { floorService } from '$lib/services/FloorService';
 	import { goto } from '$app/navigation';
-	function handleClick() {
-		const floorId = floorService.addFloor();
+
+	const map = 0;
+
+	async function handleClick() {
+		const floorId = await floorService.addFloor(map);
 		goto(`floors/${floorId}`);
 	}
 </script>

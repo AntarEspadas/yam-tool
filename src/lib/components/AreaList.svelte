@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { AreaDetails } from '$lib/types';
+	import type { Area } from '$lib/types';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 	import { createEventDispatcher } from 'svelte';
 
-	export let areas: Record<string, AreaDetails>;
+	export let areas: Area[];
 	export let value: string | undefined = undefined;
 	export let disableAddButton = false;
 
@@ -16,18 +16,18 @@
 <div class="area-list">
 	<div class="area-list-content">
 		<ListBox>
-			{#each Object.keys(areas) as areaId (areaId)}
+			{#each areas as area (area.id)}
 				<ListBoxItem
-					name={areaId}
-					class={value == areaId ? '' : 'variant-soft'}
+					name={area.id}
+					class={value == area.id ? '' : 'variant-soft'}
 					active="variant-soft-secondary"
 					hover="hover:variant-ghost"
 					bind:group={value}
-					value={areaId}
+					value={area.id}
 				>
-					<h6 class="h6">{areas[areaId].identifier}</h6>
+					<h6 class="h6">{area.identifier}</h6>
 					<h5 class="h5">
-						{areas[areaId].name}
+						{area.name}
 					</h5>
 				</ListBoxItem>
 			{/each}
