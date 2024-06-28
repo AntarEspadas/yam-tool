@@ -5,7 +5,7 @@ export class AreaService {
 	constructor(private db: MapDb) {}
 
 	public getAreasByFloor(floorId: number) {
-		return this.db.areas.where('floorId').equals(floorId).toArray();
+		return this.db.areas.where('floorId').equals(floorId).sortBy('identifier');
 	}
 
 	public addArea(floorId: number) {
