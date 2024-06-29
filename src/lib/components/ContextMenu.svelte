@@ -8,7 +8,7 @@
 	export let autoclose = true;
 
 	const dispatch = createEventDispatcher<{
-		edit: { polygonId?: string };
+		edit: { id?: string };
 	}>();
 
 	onMount(() => {
@@ -31,7 +31,7 @@
 		class="context-menu variant-filled-surface btn-group-vertical"
 		style="--left: {x}px; --top: {y}px"
 	>
-		<button on:click={() => dispatch('edit', { polygonId })}>Edit</button>
+		<button on:click={() => dispatch('edit', { id: polygonId })}>Edit</button>
 	</div>
 {/if}
 

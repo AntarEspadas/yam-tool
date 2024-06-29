@@ -98,7 +98,7 @@
 	}
 
 	function onEdit(e: CustomEvent) {
-		const id = e.detail.polygonId;
+		const id = e.detail.id;
 		editTargetId = id;
 		polygonClosed = true;
 		activeAreaId = undefined;
@@ -156,9 +156,11 @@
 		<div class="area-details-container">
 			{#if $activeArea !== undefined && $editTarget === undefined}
 				<AreaDetailsComponent
+					id={$activeArea.id}
 					identifier={$activeArea.identifier}
 					name={$activeArea.name}
 					description={$activeArea.description}
+					on:edit={onEdit}
 				/>
 			{:else if $editTarget !== undefined}
 				<AreaDetailsForm

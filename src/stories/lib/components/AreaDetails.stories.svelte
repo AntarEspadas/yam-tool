@@ -12,9 +12,11 @@
 
 <Template let:args>
 	<AreaDetails
+		id="0"
 		identifier="Lorem"
 		name="ipsum dolor sit amet"
 		description="Nesciunt illo quos perferendis voluptatibus odit. Nam sed commodi totam nulla, fugit voluptatem? Possimus cupiditate excepturi soluta earum nihil tempore voluptates saepe."
+		on:edit
 		{...args}
 	/>
 </Template>
