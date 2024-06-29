@@ -32,23 +32,29 @@
 		<input type="search" placeholder="Search..." bind:value={searchTerm} />
 	</div>
 	<div class="area-list-content">
-		<ListBox>
-			{#each filteredAreas as area (area.id)}
-				<ListBoxItem
-					name={area.id}
-					class={value == area.id ? '' : 'variant-soft'}
-					active="variant-soft-secondary"
-					hover="hover:variant-ghost"
-					bind:group={value}
-					value={area.id}
-				>
-					<h6 class="h6">{area.identifier}</h6>
-					<h5 class="h5">
-						{area.name}
-					</h5>
-				</ListBoxItem>
-			{/each}
-		</ListBox>
+		{#if areas.length !== 0}
+			<ListBox>
+				{#each filteredAreas as area (area.id)}
+					<ListBoxItem
+						name={area.id}
+						class={value == area.id ? '' : 'variant-soft'}
+						active="variant-soft-secondary"
+						hover="hover:variant-ghost"
+						bind:group={value}
+						value={area.id}
+					>
+						<h6 class="h6">{area.identifier}</h6>
+						<h5 class="h5">
+							{area.name}
+						</h5>
+					</ListBoxItem>
+				{/each}
+			</ListBox>
+		{:else}
+			<div class="empty-list">
+				<p>Press 'New' to create a new area</p>
+			</div>
+		{/if}
 	</div>
 	<button
 		class="variant-filled btn"
@@ -68,5 +74,14 @@
 	}
 	.area-list-content {
 		overflow-y: auto;
+	}
+
+	.empty-list {
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		opacity: 0.4;
 	}
 </style>

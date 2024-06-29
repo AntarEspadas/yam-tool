@@ -26,6 +26,10 @@
 	<AreaList {areas} />
 </Story>
 
+<Story name="Empty">
+	<AreaList areas={[]} />
+</Story>
+
 <Story name="Scrollable">
 	<div class="max-height-300">
 		<AreaList areas={longAreas} />
