@@ -7,16 +7,33 @@
 	export let value: string | undefined = undefined;
 	export let disableAddButton = false;
 
+	let searchTerm = '';
+
+	$: filteredAreas = filterAreas(areas, searchTerm);
+
 	const dispatch = createEventDispatcher<{ addClick: {} }>();
+
+	function filterAreas(areas: Area[], searchTerm: string) {
+		searchTerm = searchTerm.trim();
+		if (searchTerm === '') return areas;
+		searchTerm = searchTerm.toUpperCase();
+		return areas.filter(
+			(a) =>
+				a.identifier.toUpperCase().includes(searchTerm) || a.name.toUpperCase().includes(searchTerm)
+		);
+	}
 </script>
 
-<!-- <button class="variant-filled btn" disabled={editTarget !== undefined} on:click={addPolygon}
-			>Add</button
-		> -->
 <div class="area-list">
+	<div class="input-group input-group-divider grid-cols-[auto_1fr_auto]">
+		<div class="input-group-shim">
+			<span class="material-symbols-outlined">search</span>
+		</div>
+		<input type="search" placeholder="Search..." bind:value={searchTerm} />
+	</div>
 	<div class="area-list-content">
 		<ListBox>
-			{#each areas as area (area.id)}
+			{#each filteredAreas as area (area.id)}
 				<ListBoxItem
 					name={area.id}
 					class={value == area.id ? '' : 'variant-soft'}
@@ -46,7 +63,7 @@
 <style>
 	.area-list {
 		display: grid;
-		grid-template-rows: 1fr auto;
+		grid-template-rows: auto 1fr auto;
 		row-gap: 1rem;
 	}
 	.area-list-content {
