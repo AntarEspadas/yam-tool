@@ -153,13 +153,6 @@
 	</Map>
 
 	<div>
-		<MapSettings
-			bind:gridX={floor.grid.x}
-			bind:gridY={floor.grid.y}
-			bind:showGrid={floor.grid.visible}
-			on:change={handleMapImageChange}
-		/>
-
 		<div class="area-details-container">
 			{#if $activeArea !== undefined && $editTarget === undefined}
 				<AreaDetailsComponent
@@ -180,12 +173,20 @@
 			{/if}
 		</div>
 	</div>
-	<AreaList
-		areas={$areas ?? []}
-		disableAddButton={editTargetId !== undefined}
-		bind:value={activeAreaId}
-		on:addClick={addPolygon}
-	/>
+	<div class="right-sidebar">
+		<MapSettings
+			bind:gridX={floor.grid.x}
+			bind:gridY={floor.grid.y}
+			bind:showGrid={floor.grid.visible}
+			on:change={handleMapImageChange}
+		/>
+		<AreaList
+			areas={$areas ?? []}
+			disableAddButton={editTargetId !== undefined}
+			bind:value={activeAreaId}
+			on:addClick={addPolygon}
+		/>
+	</div>
 </div>
 
 <ContextMenu
@@ -205,5 +206,10 @@
 
 	.area-details-container {
 		margin-top: 1rem;
+	}
+
+	.right-sidebar {
+		display: grid;
+		grid-template-rows: auto 1fr;
 	}
 </style>
