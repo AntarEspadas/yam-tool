@@ -5,7 +5,7 @@ export const db = new Dexie('mapDb') as MapDb;
 
 db.version(1).stores({
 	maps: '++id',
-	floors: '++id, mapId',
+	floors: '++id, mapId, sortOrder',
 	polygons: 'id, floorId',
 	areas: 'id, floorId, identifier, name'
 });

@@ -31,6 +31,7 @@ export interface Floor {
 	image?: string;
 	grid: Grid;
 	name: string;
+	sortOrder: number;
 }
 
 export interface Map {

@@ -13,7 +13,8 @@ export class FloorService {
 				x: 50,
 				y: 50
 			},
-			name: 'New Floor'
+			name: 'New Floor',
+			sortOrder: 999
 		});
 	}
 
@@ -25,12 +26,8 @@ export class FloorService {
 		return this.db.floors.put(floor);
 	}
 
-	public getFloors() {
-		return this.db.floors.toArray();
-	}
-
 	public getFloorsByMapId(mapId: number) {
-		return this.db.floors.where('mapId').equals(mapId).toArray();
+		return this.db.floors.where('mapId').equals(mapId).sortBy('sortOrder');
 	}
 }
 

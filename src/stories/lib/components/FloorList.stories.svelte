@@ -39,14 +39,16 @@
 			y: 50
 		},
 		name: '',
-		image: ''
+		image: '',
+		sortOrder: 0
 	};
 
 	const manyFloors = new Array(10).fill(0).map((_, i) => ({
 		...floorTemplate,
 		id: i,
 		name: `Floor ${i + 1}`,
-		image: images[i % images.length]
+		image: images[i % images.length],
+		sortOrder: i
 	}));
 
 	const fewFloors = manyFloors.slice(0, 2);
