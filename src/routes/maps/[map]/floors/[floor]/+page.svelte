@@ -14,6 +14,7 @@
 	import MapSettings from '$lib/components/MapSettings.svelte';
 	import Map from '$lib/components/Map.svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
+	import { leftSidebarOpen } from '$lib/stores';
 
 	export let data: PageData;
 
@@ -199,10 +200,16 @@
 </div>
 
 <button
-	class="right-sidebar-button variant-filled-surface btn btn-sm"
+	class="sidebar-button-right variant-filled-surface btn btn-sm"
 	on:click={() => (rightSidebarOpen = true)}
 >
 	<span class="material-symbols-outlined"> chevron_left </span>
+</button>
+<button
+	class="sidebar-button-left variant-filled-surface btn btn-sm"
+	on:click={() => ($leftSidebarOpen = true)}
+>
+	<span class="material-symbols-outlined"> chevron_right </span>
 </button>
 <ContextMenu
 	bind:open={showContextMenu}
@@ -217,10 +224,10 @@
 		display: grid;
 		column-gap: 10px;
 		@include xs {
-			grid-template-rows: auto auto auto auto;
+			grid-template-rows: auto auto auto;
 		}
 		@include md {
-			grid-template-columns: auto auto 2fr auto;
+			grid-template-columns: auto 1fr auto;
 		}
 	}
 
@@ -240,9 +247,8 @@
 		}
 	}
 
-	.right-sidebar-button {
+	button[class^='sidebar-button-'] {
 		position: fixed;
-		right: 5px;
 		top: 5px;
 		@include lg {
 			display: none;
@@ -251,5 +257,13 @@
 		@include xl {
 			display: block;
 		}
+	}
+
+	button.sidebar-button-right {
+		right: 5px;
+	}
+
+	button.sidebar-button-left {
+		left: 5px;
 	}
 </style>

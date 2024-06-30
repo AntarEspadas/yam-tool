@@ -32,7 +32,6 @@
 
 	function getWidth(breakpoint: Breakpoint, mounted: boolean) {
 		if (!mounted) return Number.POSITIVE_INFINITY;
-		console.log('div', breakpointDiv);
 		const varValue = getComputedStyle(breakpointDiv).getPropertyValue('--' + breakpoint);
 		return Number(varValue?.replaceAll('px', ''));
 	}

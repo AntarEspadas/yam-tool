@@ -12,7 +12,8 @@ export class FloorService {
 				visible: false,
 				x: 50,
 				y: 50
-			}
+			},
+			name: 'New Floor'
 		});
 	}
 
@@ -28,10 +29,9 @@ export class FloorService {
 		return this.db.floors.toArray();
 	}
 
-	// public saveFloors(floors: Record<string, Floor | undefined>) {
-	// 	const serializedFloors = JSON.stringify(floors);
-	// 	localStorage.setItem(FloorService.KEY, serializedFloors);
-	// }
+	public getFloorsByMapId(mapId: number) {
+		return this.db.floors.where('mapId').equals(mapId).toArray();
+	}
 }
 
 export const floorService = new FloorService(db);
