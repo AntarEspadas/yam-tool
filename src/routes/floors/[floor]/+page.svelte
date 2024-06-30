@@ -217,10 +217,10 @@
 		display: grid;
 		column-gap: 10px;
 		@include xs {
-			grid-template-rows: auto auto auto;
+			grid-template-rows: auto auto auto auto;
 		}
 		@include md {
-			grid-template-columns: auto 2fr auto;
+			grid-template-columns: auto auto 2fr auto;
 		}
 	}
 

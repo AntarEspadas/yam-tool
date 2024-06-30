@@ -30,6 +30,7 @@ export interface Floor {
 	mapId: number;
 	image?: string;
 	grid: Grid;
+	name: string;
 }
 
 export interface Map {
