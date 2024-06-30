@@ -59,6 +59,7 @@
     ]
   },
   "dependencies": {
-    "dexie": "^4.0.7"
+    "dexie": "^4.0.7",
+    "vaul-svelte": "^0.3.1"
   }
 }
