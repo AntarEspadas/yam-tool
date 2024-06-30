@@ -100,7 +100,7 @@
 		if (!allowEdit) return;
 		if (closed) return;
 		if (e.button !== 0) return;
-		const [x, y] = snap(e.clientX, e.clientY, gridX, gridY);
+		const [x, y] = snap(e.layerX, e.layerY, gridX, gridY);
 		points.push({
 			x,
 			y,
@@ -134,7 +134,7 @@
 	function onDrag(e: MouseEvent) {
 		if (!allowEdit) return;
 		if (dragTarget === undefined) return;
-		const [x, y] = snap(e.clientX, e.clientY, gridX, gridY);
+		const [x, y] = snap(e.layerX, e.layerY, gridX, gridY);
 		dragTarget.x = x;
 		dragTarget.y = y;
 		// We can later use this to skip over 'click' events, as they should not be fired if the element was dragged
