@@ -42,14 +42,19 @@
 		image: ''
 	};
 
-	const floors = new Array(10).fill(0).map((_, i) => ({
+	const manyFloors = new Array(10).fill(0).map((_, i) => ({
 		...floorTemplate,
 		id: i,
 		name: `Floor ${i + 1}`,
 		image: images[i % images.length]
 	}));
+
+	const fewFloors = manyFloors.slice(0, 2);
 </script>
 
-<Story name="Default">
-	<FloorList {floors} current={0} />
-</Story>
+<Template let:args>
+	<FloorList current={0} {...args} on:add />
+</Template>
+
+<Story name="Few floors" args={{ floors: fewFloors }} />
+<Story name="Many floors" args={{ floors: manyFloors }} />

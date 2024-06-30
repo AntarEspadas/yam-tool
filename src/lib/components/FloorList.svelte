@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { Floor } from '$lib/types';
+	import { createEventDispatcher } from 'svelte';
 
 	export let floors: Floor[];
 	export let current: number;
+
+	const dispatch = createEventDispatcher<{ add: {} }>();
 </script>
 
 <div class="floor-list card p-4">
@@ -18,6 +21,13 @@
 			</div>
 		</a>
 	{/each}
+	<button class="add-btn btn" on:click={() => dispatch('add', {})} aria-label="Add floor">
+		<div
+			class="add-card card variant-soft border-surface-500 p-4 hover:variant-soft-secondary hover:border-secondary-500"
+		>
+			<span class="material-symbols-outlined">add</span>
+		</div>
+	</button>
 </div>
 
 <style lang="scss">
@@ -40,5 +50,20 @@
 		width: 100%;
 		margin-bottom: 10px;
 		padding: 7px;
+	}
+
+	.add-btn {
+		width: 100%;
+		padding: 0px;
+	}
+
+	.add-card {
+		width: 70%;
+		aspect-ratio: 2/3;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border-style: dashed;
+		border-width: 2px;
 	}
 </style>
