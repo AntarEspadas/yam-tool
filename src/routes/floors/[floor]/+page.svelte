@@ -13,6 +13,7 @@
 	import AreaList from '$lib/components/AreaList.svelte';
 	import MapSettings from '$lib/components/MapSettings.svelte';
 	import Map from '$lib/components/Map.svelte';
+	import Sidebar from '$lib/components/Sidebar.svelte';
 
 	export let data: PageData;
 
@@ -22,6 +23,8 @@
 	let contextMenuX = 0;
 	let contextMenuY = 0;
 	let contextMenuTarget: string;
+
+	let rightSidebarOpen = false;
 
 	let editTargetId: string | undefined = undefined;
 	let activeAreaId: string | undefined = undefined;
@@ -122,7 +125,7 @@
 	}, 500);
 </script>
 
-<div class="container">
+<div class="main-container">
 	<Map
 		gridX={floor.grid.x}
 		gridY={floor.grid.y}
@@ -175,22 +178,32 @@
 			{/if}
 		</div>
 	</div>
-	<div class="right-sidebar">
-		<MapSettings
-			bind:gridX={floor.grid.x}
-			bind:gridY={floor.grid.y}
-			bind:showGrid={floor.grid.visible}
-			on:change={handleMapImageChange}
-		/>
-		<AreaList
-			areas={$areas ?? []}
-			disableAddButton={editTargetId !== undefined}
-			bind:value={activeAreaId}
-			on:addClick={addPolygon}
-		/>
+	<div>
+		<Sidebar breakpoint="lg" direction="right" bind:open={rightSidebarOpen}>
+			<div class="right-sidebar">
+				<MapSettings
+					bind:gridX={floor.grid.x}
+					bind:gridY={floor.grid.y}
+					bind:showGrid={floor.grid.visible}
+					on:change={handleMapImageChange}
+				/>
+				<AreaList
+					areas={$areas ?? []}
+					disableAddButton={editTargetId !== undefined}
+					bind:value={activeAreaId}
+					on:addClick={addPolygon}
+				/>
+			</div>
+		</Sidebar>
 	</div>
 </div>
 
+<button
+	class="right-sidebar-button variant-filled-surface btn btn-sm"
+	on:click={() => (rightSidebarOpen = true)}
+>
+	<span class="material-symbols-outlined"> chevron_left </span>
+</button>
 <ContextMenu
 	bind:open={showContextMenu}
 	bind:polygonId={contextMenuTarget}
@@ -199,11 +212,16 @@
 	on:edit={onEdit}
 />
 
-<style>
-	.container {
+<style lang="scss">
+	.main-container {
 		display: grid;
-		grid-template-columns: auto 2fr 1fr;
 		column-gap: 10px;
+		@include xs {
+			grid-template-rows: auto auto auto;
+		}
+		@include md {
+			grid-template-columns: auto 2fr auto;
+		}
 	}
 
 	.area-details-container {
@@ -213,5 +231,25 @@
 	.right-sidebar {
 		display: grid;
 		grid-template-rows: auto 1fr;
+		height: 100%;
+		@include xs {
+			width: 100%;
+		}
+		@include sm {
+			width: 300px;
+		}
+	}
+
+	.right-sidebar-button {
+		position: fixed;
+		right: 5px;
+		top: 5px;
+		@include lg {
+			display: none;
+		}
+
+		@include xl {
+			display: block;
+		}
 	}
 </style>
