@@ -17,7 +17,11 @@
 				class="floor-preview card variant-soft p-4 hover:variant-soft-secondary"
 			>
 				<p>{floor.name}</p>
-				<img class="floor-preview-image" src={floor.image} alt={floor.name} />
+				{#if floor.image}
+					<img class="floor-preview-image" src={floor.image} alt={floor.name} />
+				{:else}
+					<span class="missing-image material-symbols-outlined"> description </span>
+				{/if}
 			</div>
 		</a>
 	{/each}
@@ -65,5 +69,11 @@
 		align-items: center;
 		border-style: dashed;
 		border-width: 2px;
+	}
+
+	.missing-image {
+		text-align: center;
+		width: 100%;
+		font-size: 60px;
 	}
 </style>

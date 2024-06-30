@@ -30,6 +30,7 @@
 		if (!mounted) return;
 		if (src === undefined) {
 			aspectRatio = '9/16';
+			actualSrc = undefined;
 			return;
 		}
 		const image = new Image();

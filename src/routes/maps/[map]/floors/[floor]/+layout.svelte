@@ -11,12 +11,22 @@
 	$: ({ map, floorId } = data);
 
 	$: floors = liveQuery(async () => await floorService.getFloorsByMapId(map.id));
+
+	$: closeSidebar(floorId);
+
+	async function addFloor() {
+		await floorService.addFloor(map.id);
+	}
+
+	function closeSidebar(floorId: number) {
+		$leftSidebarOpen = false;
+	}
 </script>
 
 <div class="floor-layout">
 	<div>
 		<Sidebar breakpoint="lg" direction="left" bind:open={$leftSidebarOpen}>
-			<FloorList floors={$floors ?? []} current={floorId} />
+			<FloorList floors={$floors ?? []} current={floorId} on:add={addFloor} />
 		</Sidebar>
 	</div>
 	<slot />

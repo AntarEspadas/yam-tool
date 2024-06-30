@@ -52,6 +52,8 @@
 	}));
 
 	const fewFloors = manyFloors.slice(0, 2);
+
+	const missingImage = [{ ...floorTemplate, name: 'New floor' }];
 </script>
 
 <Template let:args>
@@ -60,3 +62,4 @@
 
 <Story name="Few floors" args={{ floors: fewFloors }} />
 <Story name="Many floors" args={{ floors: manyFloors }} />
+<Story name="Missing image" args={{ floors: missingImage }} />
