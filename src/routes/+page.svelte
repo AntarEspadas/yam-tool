@@ -6,7 +6,7 @@
 
 	async function handleClick() {
 		const floorId = await floorService.addFloor(map);
-		goto(`floors/${floorId}`);
+		goto(`/maps/${map}/floors/${floorId}`);
 	}
 </script>
 
