@@ -29,7 +29,7 @@
 		<div class="input-group-shim">
 			<span class="material-symbols-outlined">search</span>
 		</div>
-		<input type="search" placeholder="Search..." bind:value={searchTerm} />
+		<input type="search" placeholder="Search..." data-vaul-no-drag bind:value={searchTerm} />
 	</div>
 	<div class="area-list-content">
 		{#if areas.length !== 0}

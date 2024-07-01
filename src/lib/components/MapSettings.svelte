@@ -25,15 +25,17 @@
 			<label class="label"
 				><span>Grid X</span>
 				<br />
-				<input class="input" type="number" bind:value={gridX} />
+				<input class="input" type="number" data-vaul-no-drag bind:value={gridX} />
 			</label>
-			<RangeSlider name="grid-x" bind:value={gridX} min={1} max={200} step={0.5}></RangeSlider>
+			<RangeSlider name="grid-x" data-vaul-no-drag bind:value={gridX} min={1} max={200} step={0.5}
+			></RangeSlider>
 			<label class="label"
 				><span>Grid Y</span>
 				<br />
-				<input class="input" type="number" bind:value={gridY} />
+				<input class="input" type="number" data-vaul-no-drag bind:value={gridY} />
 			</label>
-			<RangeSlider name="grid-y" bind:value={gridY} min={1} max={200} step={0.5}></RangeSlider>
+			<RangeSlider name="grid-y" data-vaul-no-drag bind:value={gridY} min={1} max={200} step={0.5}
+			></RangeSlider>
 		</svelte:fragment>
 	</AccordionItem>
 </Accordion>
