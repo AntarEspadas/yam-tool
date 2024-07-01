@@ -2,10 +2,16 @@
 	import { FileDropzone } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
 
-	export let gridX;
-	export let gridY;
+	let inputGridX: number;
+	let inputGridY: number;
+
+	export { inputGridX as gridX, inputGridY as gridY };
+
 	export let showGrid: boolean;
 	export let src: string | undefined;
+
+	$: gridX = inputGridX / 5;
+	$: gridY = inputGridY / 5;
 
 	// Because we need to calculate the dimensions of every new image, using the src prop directy
 	// causes the page to jump, since the image is updated first, then moments later the aspect ratio.
@@ -19,6 +25,9 @@
 	let mounted = false;
 
 	let aspectRatio = '1/1';
+
+	let offsetWidth: number = 0;
+	let offsetHeight: number = 0;
 
 	$: getSize(src, mounted);
 
@@ -48,13 +57,15 @@
 <div
 	class="map"
 	class:hide={actualSrc === undefined}
-	style="--grid-x:{gridX}px; --grid-y:{gridY}px"
+	style="--grid-x:{gridX}%; --grid-y:{gridY}%"
 	style:--img="url('{actualSrc}')"
 	style:--aspect-ratio={aspectRatio}
 	bind:this={ref}
+	bind:offsetWidth
+	bind:offsetHeight
 >
 	<div style="height: 100%; width: 100%;">
-		<slot {ref} />
+		<slot {ref} {offsetWidth} {offsetHeight} />
 	</div>
 	{#if showGrid}
 		<div class="grid"></div>

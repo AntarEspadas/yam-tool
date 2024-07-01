@@ -3,15 +3,19 @@
 	import type { Point } from '$lib/types';
 	import { polygonService } from '$lib/services/PolygonService';
 
+	let relativeGridX;
+	let relativeGridY;
+
+	export { relativeGridX as gridX, relativeGridY as gridY };
+
 	export let allowEdit = false;
 	export let id: string;
 	export let floorId: number;
-	export let gridX: number;
-	export let gridY: number;
-	// export let editMode = false;
 	export let disabled = false;
 	export let parent: HTMLElement;
 	export let forceShow = false;
+	export let parentWidth = 0;
+	export let parentHeight = 0;
 
 	const dispatch = createEventDispatcher<{
 		closed: {};
@@ -26,6 +30,9 @@
 
 	let mounted = false;
 	let loaded = false;
+
+	$: gridX = (relativeGridX / 500) * parentWidth;
+	$: gridY = (relativeGridY / 500) * parentHeight;
 
 	$: opacity = forceShow ? 1 : 0;
 

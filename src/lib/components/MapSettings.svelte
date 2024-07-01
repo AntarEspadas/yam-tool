@@ -27,13 +27,13 @@
 				<br />
 				<input class="input" type="number" bind:value={gridX} />
 			</label>
-			<RangeSlider name="grid-x" bind:value={gridX} min={5} max={150} step={0.25}></RangeSlider>
+			<RangeSlider name="grid-x" bind:value={gridX} min={1} max={200} step={0.5}></RangeSlider>
 			<label class="label"
 				><span>Grid Y</span>
 				<br />
 				<input class="input" type="number" bind:value={gridY} />
 			</label>
-			<RangeSlider name="grid-y" bind:value={gridY} min={5} max={150} step={0.25}></RangeSlider>
+			<RangeSlider name="grid-y" bind:value={gridY} min={1} max={200} step={0.5}></RangeSlider>
 		</svelte:fragment>
 	</AccordionItem>
 </Accordion>

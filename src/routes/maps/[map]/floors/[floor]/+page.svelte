@@ -133,6 +133,8 @@
 		showGrid={floor.grid.visible}
 		src={floor.image}
 		let:ref
+		let:offsetWidth
+		let:offsetHeight
 		on:change={handleMapImageChange}
 	>
 		<svg width="100%" height="100%">
@@ -148,6 +150,8 @@
 						polygon == contextMenuTarget}
 					gridX={floor.grid.x}
 					gridY={floor.grid.y}
+					parentWidth={offsetWidth}
+					parentHeight={offsetHeight}
 					on:closed={markPolygonClosed}
 					on:contextmenu={onContextMenu}
 					on:click={handlePolygonClicked}
