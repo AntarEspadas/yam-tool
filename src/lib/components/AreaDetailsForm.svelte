@@ -47,6 +47,8 @@
 		disabled={!valid || forceDisableSubmit}>Done</button
 	>
 	<button class="variant-ghost-error btn" type="button" on:click={handleDelete}>Delete</button>
+
+	<p class="mt-4 text-slate-400"><em>Note: changes will be stored on your device only</em></p>
 </form>
 
 <style>
