@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-
+	import Markdown from './Markdown.svelte';
 	/** The id for the area */
 	export let id: string;
 	/** Short identifier for the area, such as 1A, 2B, etc.*/
@@ -19,8 +19,8 @@
 	</header>
 	{#if description}
 		<hr class="mt-4 opacity-50" />
-		<section class="p-4">
-			<p>{description}</p>
+		<section class="description p-4">
+			<Markdown content={description} />
 		</section>
 	{/if}
 	<footer class="card-footer mt-4">
