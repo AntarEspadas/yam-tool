@@ -82,13 +82,13 @@
 <style lang="scss">
 	.map {
 		background-image: var(--img);
-		background-size: contain;
+		background-size: cover;
 		background-repeat: no-repeat;
 		aspect-ratio: var(--aspect-ratio);
 		overflow-y: hidden;
 
 		@include xs {
-			width: 95vw;
+			max-width: 95vw;
 			max-height: 90vh;
 			height: unset;
 		}
