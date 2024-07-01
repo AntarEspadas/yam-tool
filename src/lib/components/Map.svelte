@@ -4,14 +4,23 @@
 
 	let inputGridX: number;
 	let inputGridY: number;
+	let inputGridXOffset: number = 0;
+	let inputGridYOffset: number = 0;
 
-	export { inputGridX as gridX, inputGridY as gridY };
+	export {
+		inputGridX as gridX,
+		inputGridY as gridY,
+		inputGridXOffset as gridXOffset,
+		inputGridYOffset as gridYOffset
+	};
 
 	export let showGrid: boolean;
 	export let src: string | undefined;
 
 	$: gridX = inputGridX / 5;
 	$: gridY = inputGridY / 5;
+	$: gridXOffset = inputGridXOffset / 5;
+	$: gridYOffset = inputGridYOffset / 5;
 
 	// Because we need to calculate the dimensions of every new image, using the src prop directy
 	// causes the page to jump, since the image is updated first, then moments later the aspect ratio.
@@ -60,6 +69,8 @@
 	style="--grid-x:{gridX}%; --grid-y:{gridY}%"
 	style:--img="url('{actualSrc}')"
 	style:--aspect-ratio={aspectRatio}
+	style:--grid-x-offset="{gridXOffset}%"
+	style:--grid-y-offset="{gridYOffset}%"
 	bind:this={ref}
 	bind:offsetWidth
 	bind:offsetHeight
@@ -106,10 +117,11 @@
 		height: 100%;
 		transform: translateY(-100%);
 		background:
-			repeating-linear-gradient(#ccccccc2 0 2px, transparent 0px 100%) top / var(--grid-x)
+			repeating-linear-gradient(#000000c2 0 2px, transparent 0px 100%) top / var(--grid-x)
 				var(--grid-y),
-			repeating-linear-gradient(90deg, #ccccccc2 0 2px, transparent 0px 100%) left / var(--grid-x)
+			repeating-linear-gradient(90deg, #000000c2 0 2px, transparent 0px 100%) left / var(--grid-x)
 				var(--grid-y);
+		background-position: var(--grid-x-offset) var(--grid-y-offset);
 	}
 
 	.no-map {

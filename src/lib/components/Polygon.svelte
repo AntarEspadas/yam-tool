@@ -5,8 +5,15 @@
 
 	let relativeGridX;
 	let relativeGridY;
+	let relativeGridXOffset;
+	let relativeGridYOffset;
 
-	export { relativeGridX as gridX, relativeGridY as gridY };
+	export {
+		relativeGridX as gridX,
+		relativeGridY as gridY,
+		relativeGridXOffset as gridXOffset,
+		relativeGridYOffset as gridYOffset
+	};
 
 	export let allowEdit = false;
 	export let id: string;
@@ -33,12 +40,14 @@
 
 	$: gridX = (relativeGridX / 500) * parentWidth;
 	$: gridY = (relativeGridY / 500) * parentHeight;
+	$: gridXOffset = (relativeGridXOffset / 500) * (parentWidth - gridX);
+	$: gridYOffset = (relativeGridYOffset / 500) * (parentHeight - gridY);
 
 	$: opacity = forceShow ? 1 : 0;
 
 	$: load(id, mounted);
 
-	$: svgPoints = getSvgPoints(points, closed, gridX, gridY);
+	$: svgPoints = getSvgPoints(points, closed, gridX, gridY, gridXOffset, gridYOffset);
 
 	$: if (!allowEdit) {
 		parent.removeEventListener('mousemove', onDrag);
@@ -78,13 +87,31 @@
 		loaded = true;
 	}
 
-	function getSvgPoints(points: Point[], closed: boolean, girdX: number, gridY: number) {
-		let pointsStr = 'M' + points.map((p) => p.x * gridX + ' ' + p.y * gridY).join(' L ');
+	function getSvgPoints(
+		points: Point[],
+		closed: boolean,
+		gridX: number,
+		gridY: number,
+		gridXOffset: number,
+		gridYOffset: number
+	) {
+		let pointsStr =
+			'M' +
+			points.map((p) => p.x * gridX + gridXOffset + ' ' + (p.y * gridY + gridYOffset)).join(' L ');
 		if (closed) pointsStr += ' Z';
 		return pointsStr;
 	}
 
-	function snap(x: number, y: number, gridX: number, gridY: number): [number, number] {
+	function snap(
+		x: number,
+		y: number,
+		gridX: number,
+		gridY: number,
+		gridXOffset: number,
+		gridYOffset: number
+	): [number, number] {
+		x -= gridXOffset;
+		y -= gridYOffset;
 		const lowestX = Math.floor(x / gridX) * gridX;
 		const lowestY = Math.floor(y / gridY) * gridY;
 		const xDiff = x - lowestX;
@@ -107,7 +134,7 @@
 		if (!allowEdit) return;
 		if (closed) return;
 		if (e.button !== 0) return;
-		const [x, y] = snap(e.layerX, e.layerY, gridX, gridY);
+		const [x, y] = snap(e.layerX, e.layerY, gridX, gridY, gridXOffset, gridYOffset);
 		points.push({
 			x,
 			y,
@@ -141,7 +168,7 @@
 	function onDrag(e: MouseEvent) {
 		if (!allowEdit) return;
 		if (dragTarget === undefined) return;
-		const [x, y] = snap(e.layerX, e.layerY, gridX, gridY);
+		const [x, y] = snap(e.layerX, e.layerY, gridX, gridY, gridXOffset, gridYOffset);
 		dragTarget.x = x;
 		dragTarget.y = y;
 		// We can later use this to skip over 'click' events, as they should not be fired if the element was dragged
@@ -200,8 +227,8 @@
 {#if allowEdit}
 	{#each points as point, i}
 		<circle
-			cx={point.x * gridX}
-			cy={point.y * gridY}
+			cx={point.x * gridX + gridXOffset}
+			cy={point.y * gridY + gridYOffset}
 			r="10"
 			fill="rgb(17, 155, 155)"
 			on:click|stopPropagation={() => pointClicked(point)}

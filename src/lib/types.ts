@@ -22,6 +22,8 @@ export interface Area {
 export interface Grid {
 	x: number;
 	y: number;
+	xOffset: number;
+	yOffset: number;
 	visible: boolean;
 }
 

@@ -52,7 +52,13 @@
 		return await areaService.getAreaById(activeAreaId!);
 	});
 
-	$: saveGrid(floor.grid.x, floor.grid.y, floor.grid.visible);
+	$: saveGrid(
+		floor.grid.x,
+		floor.grid.y,
+		floor.grid.xOffset,
+		floor.grid.yOffset,
+		floor.grid.visible
+	);
 
 	async function addPolygon() {
 		const id = await areaService.addArea(floor.id);
@@ -121,15 +127,20 @@
 		await floorService.saveFloor(floor);
 	}
 
-	const saveGrid = debounce(async (x: number, y: number, visible: boolean) => {
-		await floorService.saveFloor({ ...floor, grid: { x, y, visible } });
-	}, 500);
+	const saveGrid = debounce(
+		async (x: number, y: number, xOffset: number, yOffset: number, visible: boolean) => {
+			await floorService.saveFloor({ ...floor, grid: { x, y, xOffset, yOffset, visible } });
+		},
+		500
+	);
 </script>
 
 <div class="main-container">
 	<Map
 		gridX={floor.grid.x}
 		gridY={floor.grid.y}
+		gridXOffset={floor.grid.xOffset}
+		gridYOffset={floor.grid.yOffset}
 		showGrid={floor.grid.visible}
 		src={floor.image}
 		let:ref
@@ -150,6 +161,8 @@
 						polygon == contextMenuTarget}
 					gridX={floor.grid.x}
 					gridY={floor.grid.y}
+					gridXOffset={floor.grid.xOffset}
+					gridYOffset={floor.grid.yOffset}
 					parentWidth={offsetWidth}
 					parentHeight={offsetHeight}
 					on:closed={markPolygonClosed}
@@ -189,6 +202,8 @@
 				<MapSettings
 					bind:gridX={floor.grid.x}
 					bind:gridY={floor.grid.y}
+					bind:gridXOffset={floor.grid.xOffset}
+					bind:gridYOffset={floor.grid.yOffset}
 					bind:showGrid={floor.grid.visible}
 					on:change={handleMapImageChange}
 				/>
