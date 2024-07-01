@@ -16,9 +16,9 @@
 <article class="area-details card p-4">
 	<header class="card-header">
 		<h3 class="h3">{identifier} - {name}</h3>
+		<hr class="mt-4 opacity-50" />
 	</header>
 	{#if description}
-		<hr class="mt-4 opacity-50" />
 		<section class="description p-4">
 			<Markdown content={description} />
 		</section>
@@ -36,13 +36,17 @@
 </article>
 
 <style>
+	.card {
+		grid-template-rows: auto 1fr auto;
+		display: grid;
+	}
 	header {
 		padding-bottom: 0.5rem;
 		padding-top: 0.5rem;
 	}
 
 	.area-details {
-		height: 100%;
+		max-height: 100%;
 		display: grid;
 	}
 
