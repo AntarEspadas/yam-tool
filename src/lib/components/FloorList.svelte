@@ -36,13 +36,20 @@
 
 <style lang="scss">
 	.floor-list {
-		width: 130px;
 		height: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		overflow-y: auto;
 		padding: 10px;
+
+		@include xs {
+			width: 100%;
+		}
+
+		@include sm {
+			width: 130px;
+		}
 
 		@include lg {
 			box-shadow: 10px 10px 22px -27px rgba(0, 0, 0, 0.75) inset;
