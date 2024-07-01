@@ -1,18 +1,18 @@
 <script>
-	import '../app.css';
+  import "../app.css"
 </script>
 
 <div class="app-container">
-	<slot></slot>
+  <slot></slot>
 </div>
 
 <style>
-	:global(body) {
-		margin: 0;
-	}
+  :global(body) {
+    margin: 0;
+  }
 
-	.app-container {
-		width: 100vw;
-		height: 100vh;
-	}
+  .app-container {
+    width: 100vw;
+    height: 100vh;
+  }
 </style>

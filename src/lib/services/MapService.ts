@@ -1,16 +1,16 @@
-import type { MapDb } from '$lib/db/indext';
-import { db } from '$lib/db/indext';
+import type { MapDb } from "$lib/db/indext"
+import { db } from "$lib/db/indext"
 
 export class MapService {
-	constructor(private db: MapDb) {}
+  constructor(private db: MapDb) {}
 
-	public getMapById(mapId: number) {
-		return this.db.maps.where('id').equals(mapId).first();
-	}
+  public getMapById(mapId: number) {
+    return this.db.maps.where("id").equals(mapId).first()
+  }
 
-	public addMap() {
-		return this.db.maps.add({ name: 'New Map' });
-	}
+  public addMap() {
+    return this.db.maps.add({ name: "New Map" })
+  }
 }
 
-export const mapService = new MapService(db);
+export const mapService = new MapService(db)
