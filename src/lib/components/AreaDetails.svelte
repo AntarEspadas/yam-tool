@@ -40,4 +40,13 @@
 		padding-bottom: 0.5rem;
 		padding-top: 0.5rem;
 	}
+
+	.area-details {
+		height: 100%;
+		display: grid;
+	}
+
+	.description {
+		overflow: auto;
+	}
 </style>

@@ -160,7 +160,7 @@
 		</svg>
 	</Map>
 
-	<div>
+	<div style="overflow: hidden">
 		<div class="area-details-container">
 			{#if $activeArea !== undefined && $editTarget === undefined}
 				<AreaDetailsComponent
@@ -251,6 +251,7 @@
 
 	.area-details-container {
 		margin-top: 1rem;
+		height: 100%;
 	}
 
 	.right-sidebar {
