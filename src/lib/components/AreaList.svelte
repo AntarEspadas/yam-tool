@@ -71,6 +71,8 @@
 		display: grid;
 		grid-template-rows: auto 1fr auto;
 		row-gap: 1rem;
+		overflow: hidden;
+		height: 100%;
 	}
 	.area-list-content {
 		overflow-y: auto;

@@ -24,9 +24,11 @@
 </script>
 
 <div class="floor-layout">
-	<div>
+	<div class="left-sidebar">
 		<Sidebar breakpoint="lg" direction="left" bind:open={$leftSidebarOpen}>
-			<FloorList floors={$floors ?? []} current={floorId} on:add={addFloor} />
+			<div class="floor-list-container">
+				<FloorList floors={$floors ?? []} current={floorId} on:add={addFloor} />
+			</div>
 		</Sidebar>
 	</div>
 	<slot />
@@ -36,12 +38,21 @@
 	.floor-layout {
 		display: grid;
 		width: 100%;
-		@include sm {
-			// grid-template-columns: 0 1fr;
+		height: 100%;
+		@include xs {
+			grid-template-rows: auto 1fr;
+		}
+		@include md {
+			grid-template-rows: unset;
 			grid-template-columns: auto 1fr;
 		}
-		@include lg {
-			grid-template-columns: auto 1fr;
-		}
+	}
+
+	.floor-list-container {
+		height: 100%;
+	}
+
+	.left-sidebar {
+		overflow: hidden;
 	}
 </style>

@@ -68,14 +68,25 @@
 	</div>
 {/if}
 
-<style>
+<style lang="scss">
 	.map {
 		background-image: var(--img);
 		background-size: contain;
 		background-repeat: no-repeat;
 		aspect-ratio: var(--aspect-ratio);
-		height: 800px;
 		overflow-y: hidden;
+
+		@include xs {
+			width: 95vw;
+			max-height: 90vh;
+			height: unset;
+		}
+
+		@include md {
+			width: unset;
+			max-width: 96%;
+			max-height: 95%;
+		}
 	}
 
 	.grid {

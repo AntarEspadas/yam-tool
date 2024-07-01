@@ -2,7 +2,7 @@
 	import { Drawer } from 'vaul-svelte';
 	import { onMount } from 'svelte';
 
-	type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+	type Breakpoint = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
 
 	export let breakpoint: Breakpoint;
 	export let open = false;
@@ -61,6 +61,7 @@
 		--md: #{$mdBreakpoint};
 		--lg: #{$lgBreakpoint};
 		--xl: #{$xlBreakpoint};
+		--xxl: #{$xxlBreakpoint};
 	}
 
 	.card {

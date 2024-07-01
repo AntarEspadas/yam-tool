@@ -179,8 +179,8 @@
 			{/if}
 		</div>
 	</div>
-	<div>
-		<Sidebar breakpoint="lg" direction="right" bind:open={rightSidebarOpen}>
+	<div class="right-sidebar-container">
+		<Sidebar breakpoint="xxl" direction="right" bind:open={rightSidebarOpen}>
 			<div class="right-sidebar">
 				<MapSettings
 					bind:gridX={floor.grid.x}
@@ -221,13 +221,27 @@
 
 <style lang="scss">
 	.main-container {
-		display: grid;
+		height: 100%;
 		column-gap: 10px;
+		margin-left: 10px;
+		padding-top: 10px;
 		@include xs {
-			grid-template-rows: auto auto auto;
+			overflow-y: auto;
+			// display: flex;
+			// flex-direction: column;
+			// grid-template-rows: 1fr 1fr auto;
 		}
 		@include md {
-			grid-template-columns: auto 1fr auto;
+			overflow: hidden;
+			display: grid;
+			grid-template-rows: unset;
+			grid-template-columns: 1fr 480px auto;
+		}
+		@include xl {
+			grid-template-columns: 1fr 550px auto;
+		}
+		@include xxl {
+			grid-template-columns: 1fr 600px auto;
 		}
 	}
 
@@ -250,20 +264,25 @@
 	button[class^='sidebar-button-'] {
 		position: fixed;
 		top: 5px;
-		@include lg {
-			display: none;
-		}
-
-		@include xl {
-			display: block;
-		}
+		display: block;
 	}
 
 	button.sidebar-button-right {
 		right: 5px;
+		@include xxl {
+			display: none;
+		}
 	}
 
 	button.sidebar-button-left {
 		left: 5px;
+		@include lg {
+			display: none;
+		}
+	}
+
+	.right-sidebar-container {
+		height: 100%;
+		overflow: auto;
 	}
 </style>
