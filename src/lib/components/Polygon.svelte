@@ -251,5 +251,6 @@
 
   path:hover {
     opacity: 1;
+    outline: none;
   }
 </style>

@@ -67,7 +67,7 @@
   class="map"
   class:hide={actualSrc === undefined}
   style="--grid-x:{gridX}%; --grid-y:{gridY}%"
-  style:--img="url('{actualSrc}')"
+  style:background-image="url('{actualSrc}')"
   style:--aspect-ratio={aspectRatio}
   style:--grid-x-offset="{gridXOffset}%"
   style:--grid-y-offset="{gridYOffset}%"
