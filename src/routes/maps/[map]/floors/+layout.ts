@@ -6,11 +6,15 @@ export const ssr = false
 export const prerender = false
 
 export const load: PageLoad = async ({ params }) => {
+  let floorId = params.floor
+  if (floorId !== undefined) {
+    floorId = Number(floorId)
+    if (isNaN(floorId)) error(400, "Invalid floor")
+  }
+
   const mapId = Number(params.map)
-  const floorId = Number(params.floor)
 
   if (isNaN(mapId)) error(400, "Invalid map")
-  if (isNaN(floorId)) error(400, "Invalid floor")
 
   const map = await mapService.getMapById(mapId)
 

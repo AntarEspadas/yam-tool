@@ -15,6 +15,8 @@
   import Map from "$lib/components/Map.svelte"
   import Sidebar from "$lib/components/Sidebar.svelte"
   import { leftSidebarOpen } from "$lib/stores"
+  import FloorDetailsForm from "$lib/components/FloorDetailsForm.svelte"
+  import { goto } from "$app/navigation"
 
   export let data: PageData
 
@@ -26,6 +28,7 @@
   let contextMenuTarget: string
 
   let rightSidebarOpen = false
+  let editFloorDetails = false
 
   let editTargetId: string | undefined = undefined
   let activeAreaId: string | undefined = undefined
@@ -133,9 +136,34 @@
     },
     500
   )
+
+  async function updateFloorDetails(e: CustomEvent) {
+    const { name, sortOrder } = e.detail
+    floor.name = name
+    floor.sortOrder = sortOrder
+    editFloorDetails = false
+    await floorService.saveFloor(floor)
+  }
+
+  async function deleteFloor() {
+    editFloorDetails = false
+    await floorService.deleteFloorById(floor.id)
+    const floors = await floorService.getFloorsByMapId(floor.mapId)
+    if (floors.length === 0) {
+      goto(`/maps/${floor.mapId}/floors`)
+    } else {
+      goto(`/maps/${floor.mapId}/floors/${floors[0].id}`)
+    }
+  }
 </script>
 
 <div class="main-container">
+  <div class="floor-title card">
+    <h1 class="h1">{floor.name}</h1>
+    <button class="btn" aria-label="edit-floor-details" on:click={() => (editFloorDetails = true)}>
+      <span class="material-symbols-outlined"> edit_square </span>
+    </button>
+  </div>
   <Map
     gridX={floor.grid.x}
     gridY={floor.grid.y}
@@ -175,15 +203,7 @@
 
   <div style="overflow: hidden">
     <div class="area-details-container">
-      {#if $activeArea !== undefined && $editTarget === undefined}
-        <AreaDetailsComponent
-          id={$activeArea.id}
-          identifier={$activeArea.identifier}
-          name={$activeArea.name}
-          description={$activeArea.description}
-          on:edit={onEdit}
-        />
-      {:else if $editTarget !== undefined}
+      {#if $editTarget !== undefined}
         <AreaDetailsForm
           id={$editTarget.id}
           identifier={$editTarget.identifier}
@@ -192,6 +212,22 @@
           forceDisableSubmit={!polygonClosed}
           on:submit={stopEditing}
           on:delete={deleteCurrentArea}
+        />
+      {:else if editFloorDetails}
+        <FloorDetailsForm
+          name={floor.name}
+          sortOrder={floor.sortOrder}
+          on:submit={updateFloorDetails}
+          on:cancel={() => (editFloorDetails = false)}
+          on:delete={deleteFloor}
+        />
+      {:else if $activeArea !== undefined}
+        <AreaDetailsComponent
+          id={$activeArea.id}
+          identifier={$activeArea.identifier}
+          name={$activeArea.name}
+          description={$activeArea.description}
+          on:edit={onEdit}
         />
       {/if}
     </div>
@@ -244,6 +280,7 @@
     column-gap: 10px;
     margin-left: 10px;
     padding-top: 10px;
+
     @include xs {
       overflow-y: auto;
       // display: flex;
@@ -253,7 +290,7 @@
     @include md {
       overflow: hidden;
       display: grid;
-      grid-template-rows: unset;
+      grid-template-rows: auto 1fr;
       grid-template-columns: 1fr 480px auto;
     }
     @include xl {
@@ -304,5 +341,13 @@
   .right-sidebar-container {
     height: 100%;
     overflow: auto;
+  }
+
+  .floor-title {
+    display: grid;
+    grid-template-columns: 1fr 2rem 3rem;
+    grid-column: 1 / 4;
+    margin: 0.5rem;
+    padding: 0.5rem;
   }
 </style>

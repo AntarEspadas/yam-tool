@@ -29,6 +29,10 @@ export class FloorService {
   public getFloorsByMapId(mapId: number) {
     return this.db.floors.where("mapId").equals(mapId).sortBy("sortOrder")
   }
+
+  public deleteFloorById(floorId: number) {
+    return this.db.floors.delete(floorId)
+  }
 }
 
 export const floorService = new FloorService(db)
