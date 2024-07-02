@@ -5,6 +5,7 @@
   import FloorList from "$lib/components/FloorList.svelte"
   import Sidebar from "$lib/components/Sidebar.svelte"
   import { leftSidebarOpen } from "$lib/stores"
+  import { goto } from "$app/navigation"
 
   export let data: PageData
 
@@ -15,7 +16,8 @@
   $: closeSidebar(floorId)
 
   async function addFloor() {
-    await floorService.addFloor(map.id)
+    const floorId = await floorService.addFloor(map.id)
+    await goto(`/maps/${map.id}/floors/${floorId}`)
   }
 
   function closeSidebar(_floorId: number) {
