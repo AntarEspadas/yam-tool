@@ -72,6 +72,7 @@
     })
     editTargetId = id
     polygonClosed = false
+    rightSidebarOpen = false
   }
 
   async function deleteCurrentArea() {
@@ -114,7 +115,6 @@
     const id = e.detail.id
     editTargetId = id
     polygonClosed = true
-    activeAreaId = undefined
   }
 
   function handlePolygonClicked(e: CustomEvent) {

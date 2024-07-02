@@ -41,9 +41,9 @@
 {#if width >= breakpointWidth}
   <slot />
 {:else}
-  <Drawer.Root bind:open shouldScaleBackground bind:direction>
+  <Drawer.Root bind:open bind:direction>
     <Drawer.Portal>
-      <Drawer.Overlay class="fixed inset-0 bg-black/40" />
+      <Drawer.Overlay class="fixed inset-0" />
       <Drawer.Content class="sidebar-drawer-content {direction === 'left' ? 'left' : 'right'}">
         <div class="card p-4">
           <slot />
