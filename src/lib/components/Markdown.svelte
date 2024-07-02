@@ -10,6 +10,7 @@
 <div class="markdown">
   {#each sections as section}
     {#if typeof section === "string"}
+      <!-- eslint-disable-next-line svelte/no-at-html-tags -->
       {@html section}
     {:else}
       <CodeBlock language={section.lang || undefined} code={section.text} />

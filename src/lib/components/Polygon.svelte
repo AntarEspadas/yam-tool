@@ -25,7 +25,7 @@
   export let parentHeight = 0
 
   const dispatch = createEventDispatcher<{
-    closed: {}
+    closed: undefined
     contextmenu: { originalEvent: MouseEvent; polygonId: string }
     click: { originalEvent: MouseEvent; polygonId: string }
     keydown: { originalEvent: KeyboardEvent; polygonId: string }
@@ -151,7 +151,7 @@
     }
     if (point.first) {
       closed = true
-      dispatch("closed", {})
+      dispatch("closed")
     }
   }
 
@@ -225,7 +225,7 @@
   on:keydown={handleKeyDown}
 />
 {#if allowEdit}
-  {#each points as point, i}
+  {#each points as point}
     <circle
       cx={point.x * gridX + gridXOffset}
       cy={point.y * gridY + gridYOffset}

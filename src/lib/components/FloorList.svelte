@@ -5,7 +5,7 @@
   export let floors: Floor[]
   export let current: number
 
-  const dispatch = createEventDispatcher<{ add: {} }>()
+  const dispatch = createEventDispatcher<{ add: undefined }>()
 </script>
 
 <div class="floor-list card p-4">
@@ -25,7 +25,7 @@
       </div>
     </a>
   {/each}
-  <button class="add-btn btn" on:click={() => dispatch("add", {})} aria-label="Add floor">
+  <button class="add-btn btn" on:click={() => dispatch("add")} aria-label="Add floor">
     <div
       class="add-card card variant-soft border-surface-500 p-4 hover:variant-soft-secondary hover:border-secondary-500"
     >

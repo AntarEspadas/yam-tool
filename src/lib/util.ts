@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function debounce<T extends any[]>(callback: (...args: T) => void, wait: number) {
   let timeoutId: number | null = null
   return (...args: T) => {

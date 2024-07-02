@@ -11,7 +11,7 @@
 
   $: filteredAreas = filterAreas(areas, searchTerm)
 
-  const dispatch = createEventDispatcher<{ addClick: {} }>()
+  const dispatch = createEventDispatcher<{ addClick: undefined }>()
 
   function filterAreas(areas: Area[], searchTerm: string) {
     searchTerm = searchTerm.trim()
@@ -59,7 +59,7 @@
   <button
     class="variant-filled btn"
     disabled={disableAddButton}
-    on:click={() => dispatch("addClick", {})}
+    on:click={() => dispatch("addClick")}
   >
     <span class="material-symbols-outlined">add</span>
     <span>New</span>

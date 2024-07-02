@@ -18,7 +18,7 @@
     await floorService.addFloor(map.id)
   }
 
-  function closeSidebar(floorId: number) {
+  function closeSidebar(_floorId: number) {
     $leftSidebarOpen = false
   }
 </script>

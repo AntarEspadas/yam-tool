@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Accordion, AccordionItem } from "@skeletonlabs/skeleton"
-  import { RangeSlider } from "@skeletonlabs/skeleton"
   import { FileButton } from "@skeletonlabs/skeleton"
   import Slider from "./Slider.svelte"
 

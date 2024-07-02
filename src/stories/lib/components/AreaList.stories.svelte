@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-  import { Story, Template } from "@storybook/addon-svelte-csf"
+  import { Story } from "@storybook/addon-svelte-csf"
   import type { Meta } from "@storybook/svelte"
   import AreaList from "$lib/components/AreaList.svelte"
   import type { Area } from "$lib/types"
