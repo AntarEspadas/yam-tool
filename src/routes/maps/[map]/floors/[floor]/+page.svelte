@@ -354,6 +354,7 @@
     position: fixed;
     top: 5px;
     display: block;
+    padding-bottom: 0;
   }
 
   button.sidebar-button-right {
