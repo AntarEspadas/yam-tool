@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify"
 import type { RendererObject, TokensList, Tokens } from "marked"
 import { marked } from "marked"
 
@@ -30,7 +31,10 @@ export class MarkdownService {
     for (const section of tokenSections) {
       if (section.length === 0) continue
       if (section[0].type !== "code") {
-        result.push(marked.parser(section))
+        const renderedSection = DOMPurify.sanitize(marked.parser(section), {
+          USE_PROFILES: { html: true },
+        })
+        result.push(renderedSection)
       } else {
         result.push(section[0])
       }
