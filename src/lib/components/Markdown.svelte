@@ -20,10 +20,20 @@
 
 <style lang="scss">
   .markdown {
-    :global(ul),
+    :global(ul) {
+      list-style: disc inside;
+      padding-left: 1rem;
+    }
     :global(ol) {
-      list-style: unset;
-      padding-left: 2rem;
+      list-style: decimal inside;
+      padding-left: 1rem;
+    }
+    :global(table) {
+      margin-top: 1rem;
+    }
+    :global(div.codeblock) {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
     }
   }
 </style>

@@ -29,16 +29,49 @@ And here *we* **mix** ~~and~~ _match_ \`styles\`
 - bullet
 - points
 
+1. one
+2. two
+3. three
+
+a
+
+1000000. First list item
+   - First nested list item
+     - Second nested list ite
+
 \`\`\`   
 print("Hello, World!")
 \`\`\`
 
-what
-
 >Do not believe everything you read on the internet
 >-Abraham Lincoln
 
-[A link](https://5e.tools)`
+[A link](https://5e.tools)
+
+- [ ] A checkbox
+
+Water is H<sub>2</sub>O
+
+E = mc<sup>2</sub>
+
+
+
+
+| API        | Documented CSP Policy           |
+| ------------- |:-------------:|
+|Google Fonts|No documented policy|
+|Mixpanel|No documented policy|
+|Ractive.js|[Documented policy](http://docs.ractivejs.org/edge/csp)|
+|Stripe|[Documented policy](https://support.stripe.com/questions/what-about-pci-dss-3-1)|
+
+| Model 1 | Model 2 | Conclusion |
+|---------|---------|------------|
+| True    | True    | ???        |
+| False   | False   | ???        |
+| True    | False   | ???        |
+| False   | True    | ???        |
+
+`
 </script>
 
 <Story name="Default">
