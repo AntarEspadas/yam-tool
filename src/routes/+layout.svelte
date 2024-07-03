@@ -1,8 +1,14 @@
 <script lang="ts">
   import { Modal, initializeStores } from "@skeletonlabs/skeleton"
+  import { onMount } from "svelte"
+  import { autoModeWatcher } from "@skeletonlabs/skeleton"
   import "../app.css"
 
   initializeStores()
+
+  onMount(() => {
+    autoModeWatcher()
+  })
 </script>
 
 <Modal />
