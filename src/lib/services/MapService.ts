@@ -1,4 +1,5 @@
 import type { MapDb } from "$lib/db/indext"
+import type { Map } from "$lib/types"
 import { db } from "$lib/db/indext"
 
 export class MapService {
@@ -9,7 +10,15 @@ export class MapService {
   }
 
   public addMap() {
-    return this.db.maps.add({ name: "New Map" })
+    return this.db.maps.add({ name: "New Map", description: "" })
+  }
+
+  public saveMap(map: Map) {
+    return this.db.maps.put(map)
+  }
+
+  public deleteMapById(mapId: number) {
+    return this.db.maps.delete(mapId)
   }
 }
 

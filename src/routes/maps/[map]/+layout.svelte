@@ -19,18 +19,16 @@
     await goto(`/maps/${map.id}/floors/${floorId}`)
   }
 
-  function closeSidebar(_floorId: number) {
+  function closeSidebar(_floorId: number | undefined) {
     $leftSidebarOpen = false
   }
-
-  $: console.log($floors)
 </script>
 
 <div class="floor-layout">
   <div class="left-sidebar">
     <Sidebar breakpoint="lg" direction="left" bind:open={$leftSidebarOpen}>
       <div class="floor-list-container">
-        <FloorList floors={$floors ?? []} current={floorId} on:add={addFloor} />
+        <FloorList mapId={map.id} floors={$floors ?? []} current={floorId} on:add={addFloor} />
       </div>
     </Sidebar>
   </div>

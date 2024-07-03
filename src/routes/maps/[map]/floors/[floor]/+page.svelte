@@ -169,7 +169,7 @@
     const accept = await modalService.showModal(
       "confirm",
       {
-        title: `Are you sure you wish to delete area "${floor.name}"`,
+        title: `Are you sure you wish to delete floor "${floor.name}"`,
       },
       modalStore
     )

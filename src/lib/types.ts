@@ -39,4 +39,5 @@ export interface Floor {
 export interface Map {
   id: number
   name: string
+  description: string
 }

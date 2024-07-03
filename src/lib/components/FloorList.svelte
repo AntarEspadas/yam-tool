@@ -2,15 +2,26 @@
   import type { Floor } from "$lib/types"
   import { createEventDispatcher } from "svelte"
 
+  export let mapId: number
   export let floors: Floor[]
-  export let current: number
+  export let current: number | undefined = undefined
 
   const dispatch = createEventDispatcher<{ add: undefined }>()
 </script>
 
 <div class="floor-list card p-4">
+  <a href="/maps/{mapId}">
+    <div
+      class:variant-soft={current !== undefined}
+      class:variant-soft-primary={current === undefined}
+      class="floor-preview card variant-soft p-4 hover:variant-soft-secondary"
+    >
+      <p>Overview</p>
+      <span class="missing-image material-symbols-outlined"> map </span>
+    </div>
+  </a>
   {#each floors as floor}
-    <a href="/maps/{floor.mapId}/floors/{floor.id}">
+    <a href="/maps/{mapId}/floors/{floor.id}">
       <div
         class:variant-soft={floor.id !== current}
         class:variant-soft-primary={floor.id === current}
