@@ -12,6 +12,8 @@ export class FloorService {
         visible: false,
         x: 50,
         y: 50,
+        xOffset: 0,
+        yOffset: 0,
       },
       name: "New Floor",
       sortOrder: 999,

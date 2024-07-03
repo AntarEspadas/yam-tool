@@ -37,6 +37,8 @@
       visible: true,
       x: 50,
       y: 50,
+      xOffset: 0,
+      yOffset: 0,
     },
     name: "",
     image: "",

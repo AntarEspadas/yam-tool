@@ -1,14 +1,13 @@
-import type { PageLoad } from "./$types"
 import { error } from "@sveltejs/kit"
 import { mapService } from "$lib/services/MapService"
 
 export const ssr = false
 export const prerender = false
 
-export const load: PageLoad = async ({ params }) => {
-  let floorId = params.floor
-  if (floorId !== undefined) {
-    floorId = Number(floorId)
+export const load = async ({ params }) => {
+  let floorId: number | undefined = undefined
+  if (params.floor !== undefined) {
+    floorId = Number(params.floor)
     if (isNaN(floorId)) error(400, "Invalid floor")
   }
 

@@ -1,13 +1,12 @@
 <script lang="ts">
   import { floorService } from "$lib/services/FloorService"
   import { liveQuery } from "dexie"
-  import type { PageData } from "./floors/$types"
   import FloorList from "$lib/components/FloorList.svelte"
   import Sidebar from "$lib/components/Sidebar.svelte"
   import { leftSidebarOpen } from "$lib/stores"
   import { goto } from "$app/navigation"
 
-  export let data: PageData
+  export let data
 
   $: ({ map, floorId } = data)
 

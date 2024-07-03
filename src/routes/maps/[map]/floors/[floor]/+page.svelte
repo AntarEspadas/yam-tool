@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { PageData } from "./$types"
   import { polygonService } from "$lib/services/PolygonService"
   import { imageService } from "$lib/services/ImageService"
   import { floorService } from "$lib/services/FloorService"
@@ -19,7 +18,7 @@
   import { modalService } from "$lib/services/ModalService"
   import { getModalStore } from "@skeletonlabs/skeleton"
 
-  export let data: PageData
+  export let data
 
   const modalStore = getModalStore()
 
