@@ -3,10 +3,11 @@
   import { liveQuery } from "dexie"
   import FloorList from "$lib/components/FloorList.svelte"
   import Sidebar from "$lib/components/Sidebar.svelte"
-  import { leftSidebarOpen } from "$lib/stores"
   import { goto } from "$app/navigation"
 
   export let data
+
+  let leftSidebarOpen = false
 
   $: ({ map, floorId } = data)
 
@@ -20,13 +21,13 @@
   }
 
   function closeSidebar(_floorId: number | undefined) {
-    $leftSidebarOpen = false
+    leftSidebarOpen = false
   }
 </script>
 
 <div class="floor-layout">
   <div class="left-sidebar">
-    <Sidebar breakpoint="lg" direction="left" bind:open={$leftSidebarOpen}>
+    <Sidebar breakpoint="lg" direction="left" bind:open={leftSidebarOpen}>
       <div class="floor-list-container">
         <FloorList mapId={map.id} floors={$floors ?? []} current={floorId} on:add={addFloor} />
       </div>
@@ -37,7 +38,7 @@
 
 <button
   class="sidebar-button-left variant-filled-surface btn btn-sm"
-  on:click={() => ($leftSidebarOpen = true)}
+  on:click={() => (leftSidebarOpen = true)}
 >
   <span class="material-symbols-outlined"> chevron_right </span>
 </button>
