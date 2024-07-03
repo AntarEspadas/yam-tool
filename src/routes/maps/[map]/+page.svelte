@@ -2,6 +2,7 @@
   import { goto } from "$app/navigation"
   import MapDetailsForm from "$lib/components/MapDetailsForm.svelte"
   import Markdown from "$lib/components/Markdown.svelte"
+  import { fileService } from "$lib/services/FileService.js"
   import { mapService } from "$lib/services/MapService"
   import { modalService } from "$lib/services/ModalService.js"
   import { getModalStore } from "@skeletonlabs/skeleton"
@@ -11,6 +12,7 @@
   const modalStore = getModalStore()
 
   let edit = false
+  let isExportInProgress = false
 
   $: ({ map } = data)
 
@@ -34,6 +36,16 @@
     await mapService.deleteMapById(map.id)
     await goto("/maps")
   }
+
+  async function exportMap() {
+    isExportInProgress = true
+    try {
+      const exportedMap = await mapService.exportMap(map.id)
+      fileService.download(exportedMap, map.name + ".json")
+    } finally {
+      isExportInProgress = false
+    }
+  }
 </script>
 
 {#if edit !== true}
@@ -55,6 +67,15 @@
       >
         <span class="material-symbols-outlined">edit</span>
         <span>Edit</span>
+      </button>
+      <button
+        type="button"
+        class="variant-soft-secondary btn btn-sm"
+        on:click={exportMap}
+        disabled={isExportInProgress}
+      >
+        <span class="material-symbols-outlined"> upload </span>
+        <span>Export</span>
       </button>
     </footer>
   </div>

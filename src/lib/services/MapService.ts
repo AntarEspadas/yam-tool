@@ -1,5 +1,5 @@
 import type { MapDb } from "$lib/db/indext"
-import type { Map } from "$lib/types"
+import type { Area, Floor, Map, Polygon } from "$lib/types"
 import { db } from "$lib/db/indext"
 import Dexie from "dexie"
 import { floorService, type FloorService } from "./FloorService"
@@ -25,6 +25,24 @@ export class MapService {
     return this.db.maps.put(map)
   }
 
+  public async getFloorsAreasAndPolygonsByMapId(
+    mapId: number
+  ): Promise<[Floor[], Area[], Polygon[]]> {
+    const floors = await this.floorService.getFloorsByMapId(mapId)
+    const floorIds = floors.map((f) => f.id)
+    const [areas, polygons] = await Dexie.Promise.all([
+      this.db.areas
+        .where("floorId")
+        .anyOf(...floorIds)
+        .toArray(),
+      this.db.polygons
+        .where("floorId")
+        .anyOf(...floorIds)
+        .toArray(),
+    ])
+    return [floors, areas, polygons]
+  }
+
   public deleteMapById(mapId: number) {
     return this.db.transaction(
       "rw",
@@ -33,21 +51,10 @@ export class MapService {
       this.db.areas,
       this.db.polygons,
       async () => {
-        const floors = await this.floorService.getFloorsByMapId(mapId)
-        const floorIds = floors.map((f) => f.id)
-        const [areas, polygons] = await Dexie.Promise.all([
-          this.db.areas
-            .where("floorId")
-            .anyOf(...floorIds)
-            .toArray(),
-          this.db.polygons
-            .where("floorId")
-            .anyOf(...floorIds)
-            .toArray(),
-        ])
+        const [floors, areas, polygons] = await this.getFloorsAreasAndPolygonsByMapId(mapId)
         return Dexie.Promise.all([
           this.db.maps.delete(mapId),
-          this.db.floors.bulkDelete(floorIds),
+          this.db.floors.bulkDelete(floors.map((f) => f.id)),
           this.db.areas.bulkDelete(areas.map((a) => a.id)),
           this.db.polygons.bulkDelete(polygons.map((p) => p.id)),
         ])
@@ -57,6 +64,26 @@ export class MapService {
 
   public getMaps() {
     return this.db.maps.toArray()
+  }
+
+  public exportMap(mapId: number) {
+    return this.db.transaction(
+      "rw",
+      this.db.maps,
+      this.db.floors,
+      this.db.areas,
+      this.db.polygons,
+      async () => {
+        const map = await this.getMapById(mapId)
+        const [floors, areas, polygons] = await this.getFloorsAreasAndPolygonsByMapId(mapId)
+        return JSON.stringify({
+          map,
+          floors,
+          areas,
+          polygons,
+        })
+      }
+    )
   }
 }
 
