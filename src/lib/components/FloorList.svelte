@@ -10,7 +10,7 @@
 </script>
 
 <div class="floor-list card p-4">
-  <a href="/maps/{mapId}">
+  <a data-sveltekit-replacestate href="/maps/{mapId}">
     <div
       class:variant-soft={current !== undefined}
       class:variant-soft-primary={current === undefined}
@@ -21,7 +21,7 @@
     </div>
   </a>
   {#each floors as floor}
-    <a href="/maps/{mapId}/floors/{floor.id}">
+    <a data-sveltekit-replacestate href="/maps/{mapId}/floors/{floor.id}">
       <div
         class:variant-soft={floor.id !== current}
         class:variant-soft-primary={floor.id === current}

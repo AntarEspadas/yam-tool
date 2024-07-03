@@ -180,9 +180,9 @@
     await floorService.deleteFloorById(floor.id)
     const floors = await floorService.getFloorsByMapId(floor.mapId)
     if (floors.length === 0) {
-      goto(`/maps/${floor.mapId}/floors`)
+      goto(`/maps/${floor.mapId}/floors`, { replaceState: true })
     } else {
-      goto(`/maps/${floor.mapId}/floors/${floors[0].id}`)
+      goto(`/maps/${floor.mapId}/floors/${floors[0].id}`, { replaceState: true })
     }
   }
 </script>

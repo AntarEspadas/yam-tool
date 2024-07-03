@@ -16,7 +16,7 @@
 
   async function addFloor() {
     const floorId = await floorService.addFloor(map.id)
-    await goto(`/maps/${map.id}/floors/${floorId}`)
+    await goto(`/maps/${map.id}/floors/${floorId}`, { replaceState: true })
   }
 
   function closeSidebar(_floorId: number | undefined) {
