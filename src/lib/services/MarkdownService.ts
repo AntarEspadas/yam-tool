@@ -1,27 +1,18 @@
 import DOMPurify from "dompurify"
-import type { RendererObject, TokensList, Tokens } from "marked"
+import type { TokensList, Tokens } from "marked"
 import { marked } from "marked"
 
-const renderer = {
-  heading(text: string, depth: number) {
-    return `<h${depth} class="h${depth}">${text}</h${depth}>`
-  },
-  codespan(text: string) {
-    return `<code class="code">${text}</code>`
-  },
-  link(href: string, _: unknown, text: string) {
-    const a = document.createElement("a")
-    a.href = href
-    a.innerText = text
-    a.className = "anchor"
-    return a.outerHTML
-  },
-  blockquote(text: string) {
-    return `<blockquote class="blockquote">${text}</blockquote>`
-  },
-}
-
-marked.use({ renderer: renderer as unknown as RendererObject })
+DOMPurify.addHook("afterSanitizeAttributes", function (node) {
+  const specialTags = ["H1", "H2", "H3", "H4", "H5", "H6", "BLOCKQUOTE", "CODE"]
+  if (specialTags.includes(node.tagName)) {
+    node.classList.add(node.tagName.toLowerCase())
+  }
+  if (node.tagName === "A") {
+    node.setAttribute("target", "_blank")
+    node.setAttribute("rel", "noopener")
+    node.classList.add("anchor")
+  }
+})
 
 export class MarkdownService {
   public partialParse(markdown: string) {
