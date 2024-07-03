@@ -1,7 +1,7 @@
 <script lang="ts">
   import { floorService } from "$lib/services/FloorService"
   import { liveQuery } from "dexie"
-  import type { PageData } from "./$types"
+  import type { PageData } from "./floors/$types"
   import FloorList from "$lib/components/FloorList.svelte"
   import Sidebar from "$lib/components/Sidebar.svelte"
   import { leftSidebarOpen } from "$lib/stores"
@@ -23,6 +23,8 @@
   function closeSidebar(_floorId: number) {
     $leftSidebarOpen = false
   }
+
+  $: console.log($floors)
 </script>
 
 <div class="floor-layout">
@@ -35,6 +37,13 @@
   </div>
   <slot />
 </div>
+
+<button
+  class="sidebar-button-left variant-filled-surface btn btn-sm"
+  on:click={() => ($leftSidebarOpen = true)}
+>
+  <span class="material-symbols-outlined"> chevron_right </span>
+</button>
 
 <style lang="scss">
   .floor-layout {
@@ -56,5 +65,16 @@
 
   .left-sidebar {
     overflow: hidden;
+  }
+
+  .sidebar-button-left {
+    position: fixed;
+    top: 5px;
+    display: block;
+    padding-bottom: 0;
+    left: 5px;
+    @include lg {
+      display: none;
+    }
   }
 </style>

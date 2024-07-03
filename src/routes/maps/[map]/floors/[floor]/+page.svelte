@@ -14,7 +14,6 @@
   import MapSettings from "$lib/components/MapSettings.svelte"
   import Map from "$lib/components/Map.svelte"
   import Sidebar from "$lib/components/Sidebar.svelte"
-  import { leftSidebarOpen } from "$lib/stores"
   import FloorDetailsForm from "$lib/components/FloorDetailsForm.svelte"
   import { goto } from "$app/navigation"
   import { modalService } from "$lib/services/ModalService"
@@ -292,12 +291,7 @@
 >
   <span class="material-symbols-outlined"> chevron_left </span>
 </button>
-<button
-  class="sidebar-button-left variant-filled-surface btn btn-sm"
-  on:click={() => ($leftSidebarOpen = true)}
->
-  <span class="material-symbols-outlined"> chevron_right </span>
-</button>
+
 <ContextMenu
   bind:open={showContextMenu}
   bind:polygonId={contextMenuTarget}
@@ -350,23 +344,13 @@
     }
   }
 
-  button[class^="sidebar-button-"] {
+  button.sidebar-button-right {
     position: fixed;
     top: 5px;
     display: block;
     padding-bottom: 0;
-  }
-
-  button.sidebar-button-right {
     right: 5px;
     @include xxl {
-      display: none;
-    }
-  }
-
-  button.sidebar-button-left {
-    left: 5px;
-    @include lg {
       display: none;
     }
   }
