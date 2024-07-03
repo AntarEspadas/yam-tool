@@ -71,6 +71,9 @@
 {/if}
 
 <style>
+  header {
+    margin-bottom: 2rem;
+  }
   .map-details {
     display: grid;
     height: 100%;
