@@ -17,8 +17,12 @@
   import { leftSidebarOpen } from "$lib/stores"
   import FloorDetailsForm from "$lib/components/FloorDetailsForm.svelte"
   import { goto } from "$app/navigation"
+  import { modalService } from "$lib/services/ModalService"
+  import { getModalStore } from "@skeletonlabs/skeleton"
 
   export let data: PageData
+
+  const modalStore = getModalStore()
 
   let polygonClosed = true
 
@@ -64,6 +68,7 @@
   )
 
   async function addPolygon() {
+    editFloorDetails = false
     const id = await areaService.addArea(floor.id)
     await polygonService.savePolygon({
       id,
@@ -77,11 +82,22 @@
 
   async function deleteCurrentArea() {
     if (editTargetId === undefined) return
+
+    const accept = await modalService.showModal(
+      "confirm",
+      {
+        title: `Are you sure you wish to delete area "${$editTarget?.identifier} - ${$editTarget?.name}"`,
+      },
+      modalStore
+    )
+
+    if (accept !== true) return
+
     await Promise.all([
       polygonService.deletePolygon(editTargetId),
       areaService.deleteArea(editTargetId),
     ])
-    // TODO: maybe areas should be an observable
+
     editTargetId = undefined
   }
 
@@ -112,6 +128,7 @@
   }
 
   function onEdit(e: CustomEvent) {
+    editFloorDetails = false
     const id = e.detail.id
     editTargetId = id
     polygonClosed = true
@@ -137,6 +154,11 @@
     500
   )
 
+  function editFloor() {
+    editFloorDetails = true
+    editTargetId = undefined
+  }
+
   async function updateFloorDetails(e: CustomEvent) {
     const { name, sortOrder } = e.detail
     floor.name = name
@@ -146,6 +168,16 @@
   }
 
   async function deleteFloor() {
+    const accept = await modalService.showModal(
+      "confirm",
+      {
+        title: `Are you sure you wish to delete area "${floor.name}"`,
+      },
+      modalStore
+    )
+
+    if (accept !== true) return
+
     editFloorDetails = false
     await floorService.deleteFloorById(floor.id)
     const floors = await floorService.getFloorsByMapId(floor.mapId)
@@ -160,7 +192,7 @@
 <div class="main-container">
   <div class="floor-title card">
     <h1 class="h1">{floor.name}</h1>
-    <button class="btn" aria-label="edit-floor-details" on:click={() => (editFloorDetails = true)}>
+    <button class="btn" aria-label="edit-floor-details" on:click={editFloor}>
       <span class="material-symbols-outlined"> edit_square </span>
     </button>
   </div>

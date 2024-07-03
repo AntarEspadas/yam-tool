@@ -1,6 +1,11 @@
-<script>
+<script lang="ts">
+  import { Modal, initializeStores } from "@skeletonlabs/skeleton"
   import "../app.css"
+
+  initializeStores()
 </script>
+
+<Modal />
 
 <div class="app-container">
   <slot></slot>
