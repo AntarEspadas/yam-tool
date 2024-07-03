@@ -2,6 +2,15 @@ import DOMPurify from "dompurify"
 import type { TokensList, Tokens, MarkedOptions } from "marked"
 import { marked } from "marked"
 
+const allowedDomains = [
+  window.location.hostname,
+  "i.imgur.com",
+  "cdn.discordapp.com",
+  "raw.githubusercontent.com",
+  "c.tenor.com",
+  "5e.tools",
+]
+
 DOMPurify.addHook("afterSanitizeAttributes", function (node) {
   const specialTags = ["H1", "H2", "H3", "H4", "H5", "H6", "BLOCKQUOTE", "CODE"]
   if (specialTags.includes(node.tagName)) {
@@ -15,6 +24,17 @@ DOMPurify.addHook("afterSanitizeAttributes", function (node) {
     node.classList.add("anchor")
   } else if (node.tagName === "TABLE") {
     node.classList.add("table", "table-hover")
+  } else if (node.tagName === "IMG") {
+    const src = node.getAttribute("src")
+    if (!src) return
+    const url = new URL(src, window.location.origin)
+    if (!allowedDomains.includes(url.hostname)) {
+      node.removeAttribute("src")
+      node.setAttribute(
+        "alt",
+        `Domain not allowed. Allowed domains are ${allowedDomains.join(", ")}`
+      )
+    }
   }
 })
 

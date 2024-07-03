@@ -72,8 +72,18 @@ E = mc<sup>2</sub>
 | False   | True    | ???        |
 
 `
+
+  const images = `
+  ![](https://i.imgur.com/K50YfVT.jpeg)
+  ![](https://5e.tools/img/adventure/CoS/004-cos02-01.webp)
+  ![](https://images.unsplash.com/photo-1620562303747-ba21ca6f1530?ixid=M3w0Njc5ODF8MHwxfGFsbHx8fHx8fHx8fDE2ODc5NzY2MjR8&ixlib=rb-4.0.3&w=400&h=175&auto=format&fit=crop)
+`
 </script>
 
 <Story name="Default">
   <Markdown {content} />
+</Story>
+
+<Story name="Images">
+  <Markdown content={images} />
 </Story>
