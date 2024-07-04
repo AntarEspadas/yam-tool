@@ -3,7 +3,10 @@
 
 <svelte:head>
   <title>YAM - Yet Another Map Tool</title>
-  <meta name="description" content="Easily create beautiful, interactive TTRPG maps" />
+  <meta
+    name="description"
+    content="Easily create beautiful, interactive TTRPG maps for Game Masters"
+  />
 </svelte:head>
 
 <div class="main-container">
@@ -11,7 +14,9 @@
     <strong class="text-primary-500">Y</strong>et <strong class="text-primary-500">A</strong>nother
     <strong class="text-primary-500">M</strong>ap Tool
   </h1>
-  <p class="text-surface-700-200-token">Easily create beautiful, interactive TTRPG maps</p>
+  <p class="text-surface-700-200-token">
+    Easily create beautiful, interactive TTRPG maps for Game Masters
+  </p>
   <a href="/maps">
     <button class="variant-filled-primary btn">Get started</button>
   </a>
