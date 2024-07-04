@@ -80,7 +80,7 @@
     </footer>
   </div>
 {:else}
-  <div class="card p-4" style="height: 100%; overflow: hidden;">
+  <div class="map-details-form card p-4">
     <MapDetailsForm
       name={map.name}
       description={map.description}
@@ -100,9 +100,18 @@
     height: 100%;
     grid-template-rows: auto 1fr auto;
     overflow: hidden;
+    justify-content: center;
   }
   section {
     height: 100%;
+    max-width: 1200px;
     overflow: auto;
+  }
+
+  .map-details-form {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
   }
 </style>
