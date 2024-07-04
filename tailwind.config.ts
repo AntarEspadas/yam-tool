@@ -23,7 +23,7 @@ const config = {
   ],
   // We want to prevent Tailwind from deleting these styles even if they're not directly used in the markup,
   // as they may end up being produced by rendered markdown content
-  safelist: ["h1", "h2", "h3", "h4", "h5", "h6"],
+  safelist: ["h1", "h2", "h3", "h4", "h5", "h6", "blockquote", "code"],
 } satisfies Config
 
 export default config
