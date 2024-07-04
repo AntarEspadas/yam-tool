@@ -100,16 +100,17 @@
   }
 
   async function stopEditing(e: CustomEvent) {
-    if (editTargetId === undefined) return
+    if ($editTarget === undefined) return
     const { identifier, name, description } = e.detail
     await areaService.saveArea({
-      id: editTargetId,
-      floorId: floor.id,
+      id: $editTarget.id,
+      floorId: $editTarget.floorId,
       identifier,
       name,
       description,
     })
     editTargetId = undefined
+    activeAreaId = $editTarget.id
   }
 
   function markPolygonClosed() {
