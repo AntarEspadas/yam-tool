@@ -21,6 +21,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>YAM - Maps</title>
+</svelte:head>
+
 <div class="main-container">
   <h1 class="h1">Maps</h1>
   <div class="buttons">

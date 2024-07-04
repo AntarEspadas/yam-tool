@@ -1,6 +1,11 @@
 <script lang="ts">
 </script>
 
+<svelte:head>
+  <title>YAM - Yet Another Map Tool</title>
+  <meta name="description" content="Easily create beautiful, interactive TTRPG maps" />
+</svelte:head>
+
 <div class="main-container">
   <h1 class="title text-surface-700-200-token h1">
     <strong class="text-primary-500">Y</strong>et <strong class="text-primary-500">A</strong>nother

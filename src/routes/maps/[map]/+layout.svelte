@@ -25,6 +25,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>{map.name}</title>
+</svelte:head>
+
 <div class="floor-layout">
   <div class="left-sidebar">
     <Sidebar breakpoint="lg" direction="left" bind:open={leftSidebarOpen}>
