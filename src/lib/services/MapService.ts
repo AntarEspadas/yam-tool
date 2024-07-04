@@ -1,5 +1,12 @@
 import type { MapDb } from "$lib/db/indext"
-import type { Area, Floor, Map, Polygon } from "$lib/types"
+import {
+  ImportedMapSchema,
+  type Area,
+  type Floor,
+  type ImportedMap,
+  type Map,
+  type Polygon,
+} from "$lib/types"
 import { db } from "$lib/db/indext"
 import Dexie from "dexie"
 import { floorService, type FloorService } from "./FloorService"
@@ -82,6 +89,64 @@ export class MapService {
           areas,
           polygons,
         })
+      }
+    )
+  }
+
+  public async importMap(exportedMap: string) {
+    let mapData: ImportedMap
+    try {
+      // Parse and validate imported json
+      mapData = ImportedMapSchema.parse(JSON.parse(exportedMap))
+    } catch (_e) {
+      throw new Error("Invalid map format")
+    }
+
+    this.db.transaction(
+      "rw",
+      this.db.maps,
+      this.db.floors,
+      this.db.areas,
+      this.db.polygons,
+      async () => {
+        // Remove old id so that new one is assigned
+        mapData.map.id = undefined!
+        const mapId = await this.db.maps.add(mapData.map)
+
+        const oldFloorIds = []
+        // Replace the old map id with the new one and remove all floor Ids so that new ones are assigned
+        for (const floor of mapData.floors) {
+          oldFloorIds.push(floor.id)
+          floor.mapId = mapId
+          floor.id = undefined!
+        }
+        const newFloorIds = await this.db.floors.bulkAdd(mapData.floors, { allKeys: true })
+
+        // Create a map that relates each original floor id with the new one that was just assigned
+        const floorIds = new Map<number, number>()
+        for (let i = 0; i < oldFloorIds.length; i++) {
+          floorIds.set(oldFloorIds[i], newFloorIds[i])
+        }
+
+        const areaIds = new Map<string, string>()
+
+        // Replace old floor ids with new floor ids
+        for (const area of mapData.areas) {
+          area.floorId = floorIds.get(area.floorId)!
+          const newId = crypto.randomUUID()
+          areaIds.set(area.id, newId)
+          area.id = newId
+        }
+
+        for (const polygon of mapData.polygons) {
+          polygon.floorId = floorIds.get(polygon.floorId)!
+          polygon.id = areaIds.get(polygon.id)!
+        }
+
+        await Dexie.Promise.all([
+          this.db.areas.bulkAdd(mapData.areas),
+          this.db.polygons.bulkAdd(mapData.polygons),
+        ])
       }
     )
   }
