@@ -35,5 +35,15 @@
       margin-top: 1rem;
       margin-bottom: 1rem;
     }
+    :global(img) {
+      margin: auto;
+    }
+    :global(blockquote > *) {
+      margin-bottom: 0.3rem;
+    }
+  }
+
+  .markdown > :global(*) {
+    margin-bottom: 1.1rem;
   }
 </style>
