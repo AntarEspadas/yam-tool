@@ -34,7 +34,7 @@
 
     edit = false
     await mapService.deleteMapById(map.id)
-    await goto("/maps")
+    await goto("/maps", { replaceState: true })
   }
 
   async function exportMap() {
