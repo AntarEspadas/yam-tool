@@ -1,7 +1,8 @@
 export class FileService {
-  public download(content: string, filename: string) {
+  public download(content: Blob, filename: string) {
+    const url = URL.createObjectURL(content)
     const a = document.createElement("a")
-    a.setAttribute("href", `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`)
+    a.setAttribute("href", url)
     a.setAttribute("download", filename)
 
     a.click()

@@ -41,7 +41,8 @@
     isExportInProgress = true
     try {
       const exportedMap = await mapService.exportMap(map.id)
-      fileService.download(exportedMap, map.name + ".json")
+      const blob = new Blob([exportedMap], { type: "application/json" })
+      fileService.download(blob, map.name + ".json")
     } finally {
       isExportInProgress = false
     }
