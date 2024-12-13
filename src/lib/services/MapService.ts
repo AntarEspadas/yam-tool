@@ -12,6 +12,8 @@ import Dexie from "dexie"
 import { floorService, type FloorService } from "./FloorService"
 
 export class MapService {
+  private static readonly MAP_LOADED_KEY = "mapLoaded"
+
   constructor(
     private db: MapDb,
     private floorService: FloorService
@@ -149,6 +151,16 @@ export class MapService {
         ])
       }
     )
+  }
+
+  public async importDemoMap() {
+    const serializedValue = localStorage.getItem(MapService.MAP_LOADED_KEY) ?? "false"
+    const mapAlreadyLoaded = JSON.parse(serializedValue)
+    if (mapAlreadyLoaded) return
+    const mapResponse = await fetch("/assets/demo-map.json")
+    const mapText = await mapResponse.text()
+    await this.importMap(mapText)
+    localStorage.setItem(MapService.MAP_LOADED_KEY, "true")
   }
 }
 

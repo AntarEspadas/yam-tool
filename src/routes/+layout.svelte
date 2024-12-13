@@ -2,12 +2,15 @@
   import { Modal, initializeStores } from "@skeletonlabs/skeleton"
   import { onMount } from "svelte"
   import { autoModeWatcher } from "@skeletonlabs/skeleton"
+  import { mapService } from "$lib/services/MapService"
   import "../app.css"
 
   initializeStores()
 
-  onMount(() => {
+  onMount(async () => {
     autoModeWatcher()
+
+    mapService.importDemoMap()
   })
 </script>
 
