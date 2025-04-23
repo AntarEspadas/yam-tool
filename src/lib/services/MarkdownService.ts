@@ -28,7 +28,7 @@ DOMPurify.addHook("afterSanitizeAttributes", function (node) {
     const src = node.getAttribute("src")
     if (!src) return
     const url = new URL(src, window.location.origin)
-    if (!allowedDomains.includes(url.hostname)) {
+    if (!allowedDomains.includes(url.hostname) && url.protocol != "data:") {
       node.removeAttribute("src")
       node.setAttribute(
         "alt",
