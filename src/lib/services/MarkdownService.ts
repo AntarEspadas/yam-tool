@@ -9,6 +9,7 @@ const allowedDomains = [
   "raw.githubusercontent.com",
   "c.tenor.com",
   "5e.tools",
+  "2014.5e.tools",
 ]
 
 DOMPurify.addHook("afterSanitizeAttributes", function (node) {
